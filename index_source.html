@@ -48,55 +48,46 @@ body{
 h2{
   font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;
   letter-spacing:.15em;text-transform:uppercase;color:var(--ink);
-  display:flex;align-items:baseline;gap:.9rem;margin-bottom:1.6rem;
+  display:flex;align-items:baseline;gap:.9rem;margin-bottom:1.15rem;
 }
 h2::after{content:"";flex:1;height:1px;background:var(--rule)}
 h2 em{font-style:normal;color:var(--ink-3);font-weight:400;letter-spacing:.06em;
   font-size:.68rem;flex-shrink:0;order:3}
-section{padding:clamp(2.4rem,5vw,4rem) 0;border-top:1px solid var(--rule)}
+section{padding:clamp(1.7rem,3.2vw,2.6rem) 0;border-top:1px solid var(--rule)}
 section:first-of-type{border-top:none}
 
-/* ── Kopfbereich ──────────────────────────────── */
-header{
-  background:var(--surface);border-bottom:1px solid var(--rule);
-  padding:clamp(1.8rem,4vw,3rem) 0 0;position:relative;overflow:hidden;
-}
-.head-grid{
-  display:grid;grid-template-columns:1fr auto;gap:1.5rem 2.5rem;
-  align-items:start;margin-bottom:clamp(1.6rem,3vw,2.4rem);
-}
-h1{
-  font-size:clamp(1.45rem,3.4vw,2.5rem);font-weight:600;line-height:1.14;
-  letter-spacing:-.022em;max-width:20ch;margin:.8rem 0 .9rem;
-}
-.byline{font-size:.86rem;color:var(--ink-2);line-height:1.65}
+/* ── Kopfbanner ───────────────────────────────── */
+header{background:var(--surface);border-bottom:1px solid var(--rule);position:relative}
+.banner{position:relative;overflow:hidden;min-height:clamp(260px,34vw,400px);
+  display:flex;align-items:center}
+.banner-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.banner-bg svg{display:block;width:100%;height:100%}
+.banner .wrap{position:relative;z-index:1;width:100%;
+  padding-top:clamp(1.6rem,3vw,2.4rem);padding-bottom:clamp(1.6rem,3vw,2.4rem)}
+.head-text{max-width:min(56%,600px)}
+
+h1{font-size:clamp(1.4rem,3.1vw,2.35rem);font-weight:600;line-height:1.13;
+  letter-spacing:-.022em;margin:.7rem 0 .85rem}
+.byline{font-size:.85rem;color:var(--ink-2);line-height:1.6}
 .byline b{color:var(--ink);font-weight:600}
 .byline span{color:var(--ink-3)}
 
-.stamp{
-  border:1px solid var(--rule);background:var(--bg);
-  padding:.85rem 1.1rem;text-align:left;white-space:nowrap;
-}
-.stamp .k{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--ink-3);margin-bottom:.15rem}
-.stamp .v{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600}
-.stamp .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--mid);margin-right:.4rem;vertical-align:middle}
+.stampbar{border-top:1px solid var(--rule-2);background:var(--bg)}
+.stampbar .wrap{display:flex;justify-content:flex-end;align-items:baseline;
+  gap:.7rem;padding-top:.6rem;padding-bottom:.6rem}
+.stampbar .k{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3)}
+.stampbar .v{font-family:"IBM Plex Mono",monospace;font-size:.82rem;font-weight:600;
+  color:var(--ink)}
+.stampbar .dot{display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--mid);margin-right:.35rem;vertical-align:middle}
 
-/* ── Held: Abdeckungsvisualisierung ───────────── */
-.hero{margin:0 calc(-1 * var(--pad));position:relative}
-.hero svg{display:block;width:100%;height:auto}
-.hero-cap{
-  position:absolute;left:var(--pad);bottom:.9rem;
-  font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.08em;
-  color:var(--ink-3);text-transform:uppercase;
-}
-@keyframes ring{0%{r:14;opacity:.55}100%{r:74;opacity:0}}
-@keyframes blink{0%,100%{opacity:.25}50%{opacity:.9}}
+@keyframes ring{0%{r:13;opacity:.5}100%{r:66;opacity:0}}
+@keyframes blink{0%,100%{opacity:.22}50%{opacity:.85}}
 .pulse circle{animation:ring 4.5s ease-out infinite}
 .pulse circle:nth-child(2){animation-delay:1.5s}
 .pulse circle:nth-child(3){animation-delay:3s}
-.gap-dot{animation:blink 2.4s ease-in-out infinite}
+.gap-dot{animation:blink 2.6s ease-in-out infinite}
 
 /* ── Kurzfassung ──────────────────────────────── */
 .summary{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(1.5rem,4vw,3rem)}
@@ -114,8 +105,8 @@ h1{
 
 /* ── Kennzahlen ───────────────────────────────── */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--rule);border:1px solid var(--rule);margin-top:2.2rem}
-.kpi{background:var(--surface);padding:1.15rem 1.2rem}
+  background:var(--rule);border:1px solid var(--rule);margin-top:1.5rem}
+.kpi{background:var(--surface);padding:.95rem 1.1rem}
 .kpi .n{font-family:"IBM Plex Mono",monospace;font-size:clamp(1.4rem,3vw,1.95rem);
   font-weight:600;letter-spacing:-.03em;line-height:1;color:var(--strong)}
 .kpi .n.t{color:var(--mid)}
@@ -125,7 +116,7 @@ h1{
 .phases{display:grid;gap:.2rem}
 .ph{
   display:grid;grid-template-columns:2.6rem 1fr 8.5rem 3rem;
-  gap:1rem;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--rule-2);
+  gap:1rem;align-items:center;padding:.58rem 0;border-bottom:1px solid var(--rule-2);
 }
 .ph:last-child{border-bottom:none}
 .ph .id{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-3);font-weight:500}
@@ -163,7 +154,7 @@ h1{
 
 /* ── Ansatz / Pipeline ────────────────────────── */
 .stages{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
-.stage{background:var(--surface);border:1px solid var(--rule);padding:1.4rem 1.5rem}
+.stage{background:var(--surface);border:1px solid var(--rule);padding:1.15rem 1.25rem}
 .stage .tag{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;
   text-transform:uppercase;font-weight:600;margin-bottom:.4rem}
 .stage.a .tag{color:var(--strong)} .stage.b .tag{color:var(--mid)}
@@ -179,7 +170,7 @@ h1{
 /* ── Erkenntnisse ─────────────────────────────── */
 .finds{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
   background:var(--rule);border:1px solid var(--rule)}
-.find{background:var(--surface);padding:1.3rem 1.35rem}
+.find{background:var(--surface);padding:1.05rem 1.15rem}
 .find .n{font-family:"IBM Plex Mono",monospace;font-size:1.75rem;font-weight:600;
   color:var(--strong);letter-spacing:-.035em;line-height:1}
 .find .u{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.1em;
@@ -187,17 +178,17 @@ h1{
 .find p{font-size:.8rem;color:var(--ink-2);line-height:1.5}
 
 /* ── Literatur ────────────────────────────────── */
-.litgroup{margin-bottom:2.2rem}
-.litgroup:last-child{margin-bottom:.5rem}
+.litgroup{margin-bottom:1.5rem}
+.litgroup:last-child{margin-bottom:0}
 .lithead{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap;
-  padding-bottom:.5rem;border-bottom:1px solid var(--rule);margin-bottom:.9rem}
+  padding-bottom:.42rem;border-bottom:1px solid var(--rule);margin-bottom:.6rem}
 .lithead .code{font-family:"IBM Plex Mono",monospace;font-size:.72rem;
   font-weight:600;letter-spacing:.1em;color:var(--strong);white-space:nowrap}
 .lithead .name{font-size:.92rem;font-weight:600;letter-spacing:-.01em}
 .lithead .desc{font-size:.78rem;color:var(--ink-3);flex:1;min-width:14rem;line-height:1.45}
 .litlist{display:grid;grid-template-columns:repeat(3,1fr);gap:.15rem 1.8rem}
 .litrow{display:grid;grid-template-columns:2.6rem 1fr;gap:.7rem;
-  align-items:baseline;padding:.42rem 0;border-bottom:1px solid var(--rule-2)}
+  align-items:baseline;padding:.34rem 0;border-bottom:1px solid var(--rule-2)}
 .litrow .c{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;
   color:var(--ink-3)}
 .litrow a{font-size:.78rem;color:var(--ink-2);text-decoration:none;line-height:1.45;
@@ -209,27 +200,27 @@ h1{
 /* ── Entscheidungen ───────────────────────────── */
 .decs{display:grid;grid-template-columns:repeat(2,1fr);gap:0 2.5rem}
 .dec{display:grid;grid-template-columns:2.8rem 1fr;gap:.9rem;
-  padding:.62rem 0;border-bottom:1px solid var(--rule-2);align-items:baseline}
+  padding:.48rem 0;border-bottom:1px solid var(--rule-2);align-items:baseline}
 .dec .c{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;color:var(--strong)}
 .dec .t{font-size:.83rem;color:var(--ink-2)}
 
 /* ── Listen / nächste Schritte ────────────────── */
 .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,2.8rem)}
 ul{list-style:none}
-li{font-size:.85rem;color:var(--ink-2);padding:.42rem 0 .42rem 1.1rem;
+li{font-size:.85rem;color:var(--ink-2);padding:.32rem 0 .32rem 1.1rem;
   position:relative;line-height:1.5}
-li::before{content:"";position:absolute;left:0;top:.85rem;width:.5rem;height:1px;
+li::before{content:"";position:absolute;left:0;top:.75rem;width:.5rem;height:1px;
   background:var(--ink-3)}
-li.ok::before{background:var(--mid);height:2px;top:.8rem}
-li.ask::before{background:var(--strong);height:2px;top:.8rem}
+li.ok::before{background:var(--mid);height:2px;top:.7rem}
+li.ask::before{background:var(--strong);height:2px;top:.7rem}
 li b{color:var(--ink);font-weight:600}
 
-.ask-box{background:var(--surface);border:1px solid var(--ink);padding:clamp(1.3rem,3vw,2rem)}
+.ask-box{background:var(--surface);border:1px solid var(--ink);padding:clamp(1.1rem,2.4vw,1.6rem)}
 .ask-box .asks{display:grid;grid-template-columns:1fr 1fr;gap:0 2.5rem}
 
 /* ── Fuß ──────────────────────────────────────── */
 footer{border-top:1px solid var(--rule);background:var(--surface);
-  padding:1.8rem 0;margin-top:1rem}
+  padding:1.3rem 0;margin-top:0}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
   font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--ink-3);
   letter-spacing:.04em}
@@ -238,6 +229,8 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 
 /* ── Responsiv ────────────────────────────────── */
 @media(max-width:900px){
+  .head-text{max-width:100%}
+  .banner-bg{opacity:.42}
   .summary,.lit{grid-template-columns:1fr}
   .litlist{grid-template-columns:repeat(2,1fr);gap:.15rem 1.5rem}
   .kpis,.finds{grid-template-columns:repeat(2,1fr)}
@@ -246,12 +239,10 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
   .decs .dec:last-child{border-bottom:none}
 }
 @media(max-width:620px){
-  .head-grid{grid-template-columns:1fr}
   .stamp{justify-self:start}
   .ph{grid-template-columns:1fr 3rem;gap:.3rem .8rem}
   .ph .id{display:none}
   .ph .track{grid-column:1/-1;order:3;margin-top:.4rem}
-  .hero-cap{position:static;display:block;padding:.7rem var(--pad) 0}
   .litlist{grid-template-columns:1fr}
 }
 @media(max-width:420px){
@@ -269,11 +260,90 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 </head>
 <body>
 
-<!-- ══════════════ KOPF ══════════════ -->
+<!-- ══════════════ KOPFBANNER ══════════════ -->
 <header>
-  <div class="wrap">
-    <div class="head-grid">
-      <div>
+  <div class="banner">
+
+    <!-- Hintergrund: Gateways und Geräte, ausschließlich rechte Bildhälfte -->
+    <div class="banner-bg" aria-hidden="true">
+      <svg viewBox="0 0 1200 420" preserveAspectRatio="xMaxYMid slice">
+        <defs>
+          <pattern id="g" width="34" height="34" patternUnits="userSpaceOnUse">
+            <path d="M34 0H0V34" fill="none" stroke="rgba(61,78,143,.06)" stroke-width="1"/>
+          </pattern>
+          <radialGradient id="cov">
+            <stop offset="0%" stop-color="#DE9A1C" stop-opacity=".15"/>
+            <stop offset="70%" stop-color="#DE9A1C" stop-opacity=".045"/>
+            <stop offset="100%" stop-color="#DE9A1C" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="fade" x1="0" x2="1">
+            <stop offset="0%"   stop-color="#fff" stop-opacity="1"/>
+            <stop offset="38%"  stop-color="#fff" stop-opacity="1"/>
+            <stop offset="56%"  stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+          <mask id="m">
+            <rect width="1200" height="420" fill="#fff"/>
+            <rect width="1200" height="420" fill="url(#fade)"/>
+          </mask>
+        </defs>
+
+        <rect width="1200" height="420" fill="#FCFDFE"/>
+        <g mask="url(#m)">
+          <rect width="1200" height="420" fill="url(#g)"/>
+
+          <circle cx="735" cy="238" r="118" fill="url(#cov)"/>
+          <circle cx="955" cy="132" r="104" fill="url(#cov)"/>
+          <circle cx="1085" cy="318" r="112" fill="url(#cov)"/>
+
+          <g stroke="#0D8A81" stroke-width=".8" opacity=".26">
+            <line x1="735" y1="238" x2="672" y2="198"/><line x1="735" y1="238" x2="700" y2="300"/>
+            <line x1="735" y1="238" x2="800" y2="272"/><line x1="735" y1="238" x2="790" y2="186"/>
+            <line x1="955" y1="132" x2="905" y2="88"/><line x1="955" y1="132" x2="1012" y2="106"/>
+            <line x1="955" y1="132" x2="990" y2="190"/><line x1="955" y1="132" x2="892" y2="172"/>
+            <line x1="1085" y1="318" x2="1030" y2="286"/><line x1="1085" y1="318" x2="1142" y2="290"/>
+            <line x1="1085" y1="318" x2="1108" y2="372"/><line x1="1085" y1="318" x2="1036" y2="356"/>
+          </g>
+
+          <g fill="#0D8A81">
+            <circle cx="672" cy="198" r="3"/><circle cx="700" cy="300" r="3"/>
+            <circle cx="800" cy="272" r="3"/><circle cx="790" cy="186" r="3"/>
+            <circle cx="758" cy="150" r="3"/><circle cx="812" cy="222" r="3"/>
+            <circle cx="905" cy="88"  r="3"/><circle cx="1012" cy="106" r="3"/>
+            <circle cx="990" cy="190" r="3"/><circle cx="892" cy="172" r="3"/>
+            <circle cx="1030" cy="286" r="3"/><circle cx="1142" cy="290" r="3"/>
+            <circle cx="1108" cy="372" r="3"/><circle cx="1036" cy="356" r="3"/>
+          </g>
+
+          <g fill="#3D4E8F" class="gap-dot">
+            <circle cx="640" cy="92"  r="3.5"/><circle cx="862" cy="352" r="3.5"/>
+            <circle cx="700" cy="378" r="3.5"/><circle cx="1168" cy="72" r="3.5"/>
+            <circle cx="608" cy="316" r="3.5"/><circle cx="928" cy="268" r="3.5"/>
+            <circle cx="1178" cy="182" r="3.5"/>
+          </g>
+
+          <g class="pulse" fill="none" stroke="#DE9A1C" stroke-width="1.2" opacity=".45">
+            <circle cx="735" cy="238" r="13"/><circle cx="955" cy="132" r="13"/>
+            <circle cx="1085" cy="318" r="13"/>
+          </g>
+          <g>
+            <circle cx="735" cy="238" r="6.5" fill="#DE9A1C"/>
+            <circle cx="955" cy="132" r="6.5" fill="#DE9A1C"/>
+            <circle cx="1085" cy="318" r="6.5" fill="#DE9A1C"/>
+            <circle cx="735" cy="238" r="11.5" fill="none" stroke="#DE9A1C" stroke-width="1.4"/>
+            <circle cx="955" cy="132" r="11.5" fill="none" stroke="#DE9A1C" stroke-width="1.4"/>
+            <circle cx="1085" cy="318" r="11.5" fill="none" stroke="#DE9A1C" stroke-width="1.4"/>
+          </g>
+
+          <g font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".09em">
+            <text x="862" y="336" fill="#3D4E8F" text-anchor="middle" font-weight="500">AUSBAULÜCKE</text>
+            <text x="735" y="268" fill="#B37A12" text-anchor="middle" font-weight="500">GATEWAY</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="wrap">
+      <div class="head-text">
         <div class="eyebrow">Masterarbeit · TU Clausthal × Wobcom</div>
         <h1>Nutzung von Meta- und Kontextdaten zur Planung des Ausbaus von LoRa-Netzen</h1>
         <div class="byline">
@@ -282,90 +352,16 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
           <span>Datengrundlage: Smart-Metering-Plattform Hemingway, Wobcom GmbH</span>
         </div>
       </div>
-      <!-- BEARBEITEN: Datum der letzten Aktualisierung -->
-      <div class="stamp">
-        <div class="k">Letzte Aktualisierung</div>
-        <div class="v"><span class="dot"></span>14. August 2026</div>
-      </div>
     </div>
+
   </div>
 
-  <!-- Abdeckungsvisualisierung: das Problem in einem Bild -->
-  <div class="hero">
-    <svg viewBox="0 0 1200 260" preserveAspectRatio="xMidYMid slice" role="img"
-         aria-label="Schematische Darstellung: Gateways mit Funkabdeckung, versorgte und unversorgte Sensoren">
-      <defs>
-        <pattern id="g" width="30" height="30" patternUnits="userSpaceOnUse">
-          <path d="M30 0H0V30" fill="none" stroke="var(--grid-line)" stroke-width="1"/>
-        </pattern>
-        <radialGradient id="cov">
-          <stop offset="0%" stop-color="#DE9A1C" stop-opacity=".16"/>
-          <stop offset="70%" stop-color="#DE9A1C" stop-opacity=".05"/>
-          <stop offset="100%" stop-color="#DE9A1C" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <rect width="1200" height="260" fill="#FCFDFE"/>
-      <rect width="1200" height="260" fill="url(#g)"/>
-
-      <!-- Abdeckungsflächen -->
-      <circle cx="230" cy="120" r="130" fill="url(#cov)"/>
-      <circle cx="590" cy="150" r="145" fill="url(#cov)"/>
-      <circle cx="950" cy="105" r="120" fill="url(#cov)"/>
-
-      <!-- versorgte Sensoren -->
-      <g fill="#0D8A81">
-        <circle cx="180" cy="90" r="3"/><circle cx="255" cy="150" r="3"/>
-        <circle cx="200" cy="165" r="3"/><circle cx="290" cy="95" r="3"/>
-        <circle cx="150" cy="140" r="3"/><circle cx="300" cy="160" r="3"/>
-        <circle cx="545" cy="105" r="3"/><circle cx="620" cy="185" r="3"/>
-        <circle cx="660" cy="120" r="3"/><circle cx="520" cy="180" r="3"/>
-        <circle cx="580" cy="80" r="3"/><circle cx="640" cy="215" r="3"/>
-        <circle cx="500" cy="140" r="3"/><circle cx="915" cy="70" r="3"/>
-        <circle cx="985" cy="145" r="3"/><circle cx="1010" cy="85" r="3"/>
-        <circle cx="890" cy="140" r="3"/><circle cx="945" cy="175" r="3"/>
-      </g>
-
-      <!-- Verbindungslinien -->
-      <g stroke="#0D8A81" stroke-width=".8" opacity=".28">
-        <line x1="230" y1="120" x2="180" y2="90"/><line x1="230" y1="120" x2="255" y2="150"/>
-        <line x1="230" y1="120" x2="290" y2="95"/><line x1="230" y1="120" x2="200" y2="165"/>
-        <line x1="590" y1="150" x2="545" y2="105"/><line x1="590" y1="150" x2="660" y2="120"/>
-        <line x1="590" y1="150" x2="620" y2="185"/><line x1="590" y1="150" x2="520" y2="180"/>
-        <line x1="950" y1="105" x2="915" y2="70"/><line x1="950" y1="105" x2="1010" y2="85"/>
-        <line x1="950" y1="105" x2="985" y2="145"/>
-      </g>
-
-      <!-- unversorgte Sensoren: die Ausbaulücke -->
-      <g fill="#3D4E8F" class="gap-dot">
-        <circle cx="410" cy="60" r="3.5"/><circle cx="440" cy="215" r="3.5"/>
-        <circle cx="390" cy="130" r="3.5"/><circle cx="775" cy="200" r="3.5"/>
-        <circle cx="800" cy="55" r="3.5"/><circle cx="750" cy="120" r="3.5"/>
-        <circle cx="1120" cy="180" r="3.5"/><circle cx="1090" cy="120" r="3.5"/>
-        <circle cx="70" cy="200" r="3.5"/><circle cx="105" cy="55" r="3.5"/>
-      </g>
-
-      <!-- Gateways mit Puls -->
-      <g class="pulse" fill="none" stroke="#DE9A1C" stroke-width="1.2" opacity=".5">
-        <circle cx="230" cy="120" r="14"/><circle cx="590" cy="150" r="14"/>
-        <circle cx="950" cy="105" r="14"/>
-      </g>
-      <g>
-        <circle cx="230" cy="120" r="7" fill="#DE9A1C"/>
-        <circle cx="590" cy="150" r="7" fill="#DE9A1C"/>
-        <circle cx="950" cy="105" r="7" fill="#DE9A1C"/>
-        <circle cx="230" cy="120" r="12" fill="none" stroke="#DE9A1C" stroke-width="1.5"/>
-        <circle cx="590" cy="150" r="12" fill="none" stroke="#DE9A1C" stroke-width="1.5"/>
-        <circle cx="950" cy="105" r="12" fill="none" stroke="#DE9A1C" stroke-width="1.5"/>
-      </g>
-
-      <!-- Annotation -->
-      <g font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".08em">
-        <text x="400" y="45" fill="#3D4E8F" font-weight="500">AUSBAULÜCKE</text>
-        <line x1="400" y1="50" x2="400" y2="56" stroke="#3D4E8F" stroke-width="1"/>
-        <text x="230" y="152" fill="#B37A12" text-anchor="middle" font-weight="500">GATEWAY</text>
-      </g>
-    </svg>
-    <span class="hero-cap">Schematisch · Gateways, versorgte Geräte und unversorgte Bereiche</span>
+  <!-- BEARBEITEN: Datum der letzten Aktualisierung -->
+  <div class="stampbar">
+    <div class="wrap">
+      <span class="k">Letzte Aktualisierung</span>
+      <span class="v"><span class="dot"></span>14. August 2026</span>
+    </div>
   </div>
 </header>
 
