@@ -187,19 +187,24 @@ h1{
 .find p{font-size:.8rem;color:var(--ink-2);line-height:1.5}
 
 /* ── Literatur ────────────────────────────────── */
-.lit{display:grid;grid-template-columns:1fr 15rem;gap:clamp(1.5rem,4vw,3rem);align-items:start}
-.papers{display:grid;grid-template-columns:repeat(auto-fill,minmax(2.1rem,1fr));gap:5px}
-.pp{aspect-ratio:1;background:var(--rule-2);border:1px solid var(--rule);
-  display:flex;align-items:center;justify-content:center;
-  font-family:"IBM Plex Mono",monospace;font-size:.58rem;color:var(--ink-3);
-  transition:transform .15s ease}
-.pp:hover{transform:translateY(-2px)}
-.pp.read{background:var(--strong);border-color:var(--strong);color:#fff;font-weight:600}
-.pp.skim{background:var(--mid);border-color:var(--mid);color:#fff;font-weight:600}
-.lit-side p{font-size:.82rem;color:var(--ink-2);margin-bottom:1rem}
-.lgd{display:flex;flex-direction:column;gap:.5rem;font-size:.75rem;color:var(--ink-2)}
-.lgd i{display:inline-block;width:.75rem;height:.75rem;margin-right:.5rem;
-  vertical-align:-1px;border:1px solid var(--rule)}
+.litgroup{margin-bottom:2.2rem}
+.litgroup:last-child{margin-bottom:.5rem}
+.lithead{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap;
+  padding-bottom:.5rem;border-bottom:1px solid var(--rule);margin-bottom:.9rem}
+.lithead .code{font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  font-weight:600;letter-spacing:.1em;color:var(--strong);white-space:nowrap}
+.lithead .name{font-size:.92rem;font-weight:600;letter-spacing:-.01em}
+.lithead .desc{font-size:.78rem;color:var(--ink-3);flex:1;min-width:14rem;line-height:1.45}
+.litlist{display:grid;grid-template-columns:repeat(3,1fr);gap:.15rem 1.8rem}
+.litrow{display:grid;grid-template-columns:2.6rem 1fr;gap:.7rem;
+  align-items:baseline;padding:.42rem 0;border-bottom:1px solid var(--rule-2)}
+.litrow .c{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;
+  color:var(--ink-3)}
+.litrow a{font-size:.78rem;color:var(--ink-2);text-decoration:none;line-height:1.45;
+  border-bottom:1px solid var(--rule);transition:color .15s ease,border-color .15s ease}
+.litrow a:hover{color:var(--strong);border-color:var(--strong)}
+.litrow .nolink{font-size:.78rem;color:var(--ink-2);line-height:1.45}
+.litrow .nolink::after{content:" ↗";opacity:.28;font-size:.7rem}
 
 /* ── Entscheidungen ───────────────────────────── */
 .decs{display:grid;grid-template-columns:repeat(2,1fr);gap:0 2.5rem}
@@ -234,6 +239,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 /* ── Responsiv ────────────────────────────────── */
 @media(max-width:900px){
   .summary,.lit{grid-template-columns:1fr}
+  .litlist{grid-template-columns:repeat(2,1fr);gap:.15rem 1.5rem}
   .kpis,.finds{grid-template-columns:repeat(2,1fr)}
   .stages,.decs,.ask-box .asks{grid-template-columns:1fr}
   .tri{grid-template-columns:1fr}
@@ -246,6 +252,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
   .ph .id{display:none}
   .ph .track{grid-column:1/-1;order:3;margin-top:.4rem}
   .hero-cap{position:static;display:block;padding:.7rem var(--pad) 0}
+  .litlist{grid-template-columns:1fr}
 }
 @media(max-width:420px){
   .kpis,.finds{grid-template-columns:1fr}
@@ -581,40 +588,66 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <section>
   <div class="wrap">
     <h2>Literaturbasis <em>priorisiert nach Relevanz</em></h2>
-    <div class="lit">
-      <!-- BEARBEITEN: Klasse "read" = vollständig gelesen, "skim" = teilweise -->
-      <div class="papers">
-        <div class="pp read" title="Review der Ausbreitungsmodelle für LoRa">P01</div>
-        <div class="pp" title="Citywide LoRa Deployment — operative Daten">P02</div>
-        <div class="pp" title="Effective Signal Power statt RSSI">P03</div>
-        <div class="pp" title="Metering-Infrastrukturplanung">P04</div>
-        <div class="pp" title="Adaptive Data Rate — Leistungsanalyse">P05</div>
-        <div class="pp" title="Gateway-Platzierung mit Digital Twin">P06</div>
-        <div class="pp" title="Radio Map Estimation — Übersicht">P07</div>
-        <div class="pp" title="Indoor-Pfadverlust mit Umgebungsvariablen">P08</div>
-        <div class="pp" title="Ray-Tracing-basierte Kanalmodelle">P09</div>
-        <div class="pp" title="Modellierung der Paketzustellrate">P10</div>
-        <div class="pp" title="3D Digital Twin, K-Coverage">P11</div>
-        <div class="pp" title="Minimization of Drive Tests">P12</div>
-        <div class="pp" title="Datengetriebene Verfahren für LoRaWAN">P13</div>
-        <div class="pp" title="Urbaner Pfadverlust — Messdatensatz">P14</div>
-        <div class="pp skim" title="Approximationsgüte des Greedy-Verfahrens">P15</div>
-        <div class="pp skim" title="Maximal Covering Location Problem">P16</div>
-        <div class="pp" title="Übersicht Pfadverlust und Abdeckungskarten">P17</div>
-        <div class="pp read" title="Gateway-Platzierung mit bio-inspirierten Verfahren">O1</div>
-        <div class="pp" title="DeepLoRa — Pfadverlust per Lernverfahren">O2</div>
-        <div class="pp skim" title="Near-Far-Problem, faire Datenratenzuteilung">N1</div>
-        <div class="pp skim" title="Capture Effect und Fairness">N2</div>
-        <div class="pp" title="Weitere Quellen aus Rückwärtssuche">+</div>
+    <div class="litwrap">
+      <div class="litgroup">
+        <div class="lithead">
+          <span class="code">P01–P17</span>
+          <span class="name">Kernliteratur</span>
+          <span class="desc">Priorisierte Hauptquellen, geordnet nach Nähe zur eigenen Fragestellung. Sie decken vier Stränge ab: Funkausbreitung, Signalmetriken, Standortoptimierung und Radio-Map-Schätzung.</span>
+        </div>
+        <div class="litlist">
+        <div class="litrow"><span class="c">P01</span><a href="https://doi.org/10.3390/s24123877" target="_blank" rel="noopener">A Critical Review of the Propagation Models Employed in LoRa Systems</a></div>
+        <div class="litrow"><span class="c">P02</span><a href="https://doi.org/10.1145/3625687.3625796" target="_blank" rel="noopener">Citywide LoRa Network Deployment and Operation</a></div>
+        <div class="litrow"><span class="c">P03</span><a href="https://doi.org/10.1109/ICT52184.2021.9511510" target="_blank" rel="noopener">On Superior Reliability of Effective Signal Power versus RSSI in LoRaWAN</a></div>
+        <div class="litrow"><span class="c">P04</span><a href="https://doi.org/10.3390/app13148431" target="_blank" rel="noopener">LoRaWAN Metering Infrastructure Planning in Smart Cities</a></div>
+        <div class="litrow"><span class="c">P05</span><a href="https://arxiv.org/abs/2002.08084" target="_blank" rel="noopener">Performance Analysis of Single-Cell Adaptive Data Rate-Enabled LoRaWAN</a></div>
+        <div class="litrow"><span class="c">P06</span><a href="https://arxiv.org/html/2601.07133" target="_blank" rel="noopener">Geometry-Aware LoRaWAN Gateway Placement Using Digital Twins</a></div>
+        <div class="litrow"><span class="c">P07</span><a href="https://doi.org/10.3390/electronics14081564" target="_blank" rel="noopener">A Recent Survey on Radio Map Estimation Methods for Wireless Networks</a></div>
+        <div class="litrow"><span class="c">P08</span><a href="https://arxiv.org/abs/2510.04346" target="_blank" rel="noopener">Environment-Aware Indoor LoRaWAN Path Loss</a></div>
+        <div class="litrow"><span class="c">P09</span><a href="https://arxiv.org/html/2603.29105" target="_blank" rel="noopener">LoRaWAN Gateway Placement Using Ray Tracing-based Channel Models</a></div>
+        <div class="litrow"><span class="c">P10</span><a href="https://doi.org/10.1049/ell2.12165" target="_blank" rel="noopener">Modelling of the Packet Delivery Rate in an Actual LoRaWAN Network</a></div>
+        <div class="litrow"><span class="c">P11</span><a href="https://doi.org/10.3390/fi18040193" target="_blank" rel="noopener">3D Digital Twin-Driven LoRaWAN Gateway Placements Using Memetic Optimization</a></div>
+        <div class="litrow"><span class="c">P12</span><a href="https://www.net.in.tum.de/fileadmin/TUM/NET/NET-2014-03-1/NET-2014-03-1_02.pdf" target="_blank" rel="noopener">Minimization of Drive Tests (MDT) in Mobile Communication Networks</a></div>
+        <div class="litrow"><span class="c">P13</span><a href="https://doi.org/10.1145/3711953" target="_blank" rel="noopener">A Comprehensive Survey of Data-Driven Solutions for LoRaWAN</a></div>
+        <div class="litrow"><span class="c">P14</span><a href="https://doi.org/10.3390/data8010004" target="_blank" rel="noopener">LoRaWAN Path Loss Measurements in an Urban Scenario</a></div>
+        <div class="litrow"><span class="c">P15</span><a href="https://doi.org/10.1007/BF01588971" target="_blank" rel="noopener">An Analysis of Approximations for Maximizing Submodular Set Functions</a></div>
+        <div class="litrow"><span class="c">P16</span><span class="nolink">The Maximal Covering Location Problem</span></div>
+        <div class="litrow"><span class="c">P17</span><a href="https://ieeexplore.ieee.org/document/6165627" target="_blank" rel="noopener">A Survey of Wireless Path Loss Prediction and Coverage Mapping Methods</a></div>
+        </div>
       </div>
-      <div class="lit-side">
-        <p>Die Auswahl deckt vier Stränge ab: Funkausbreitung, Signalmetriken, Standort­optimierung
-        und Radio-Map-Schätzung. Die Priorisierung richtet sich nach Nähe zur eigenen
-        Fragestellung.</p>
-        <div class="lgd">
-          <span><i style="background:#DE9A1C;border-color:#DE9A1C"></i>vollständig ausgewertet</span>
-          <span><i style="background:#0D8A81;border-color:#0D8A81"></i>abschnittsweise gelesen</span>
-          <span><i style="background:#EDF1F5"></i>eingeplant</span>
+      <div class="litgroup">
+        <div class="lithead">
+          <span class="code">O1–O2</span>
+          <span class="name">Optionale Vertiefung</span>
+          <span class="desc">Ergänzende Arbeiten, die nur bei Bedarf vertieft werden — als Vergleichsmaßstab oder als Alternative über Lernverfahren.</span>
+        </div>
+        <div class="litlist">
+        <div class="litrow"><span class="c">O1</span><a href="https://doi.org/10.3390/s22176492" target="_blank" rel="noopener">Methodology for LoRa Gateway Placement Based on Bio-Inspired Algorithms</a></div>
+        <div class="litrow"><span class="c">O2</span><span class="nolink">DeepLoRa: Learning Accurate Path Loss Model for Long Distance Links in LPWAN</span></div>
+        </div>
+      </div>
+      <div class="litgroup">
+        <div class="lithead">
+          <span class="code">N1–N2</span>
+          <span class="name">Near-Far-Problem</span>
+          <span class="desc">Situativ aufgenommen nach einem Praxishinweis aus dem Netzbetrieb zu Kollisionsverhalten und Fairness zwischen nahen und fernen Geräten.</span>
+        </div>
+        <div class="litlist">
+        <div class="litrow"><span class="c">N1</span><a href="https://arxiv.org/abs/1802.10338" target="_blank" rel="noopener">Fair Adaptive Data Rate Allocation and Power Control in LoRaWAN</a></div>
+        <div class="litrow"><span class="c">N2</span><a href="https://arxiv.org/abs/1801.00522" target="_blank" rel="noopener">A Fair Adaptive Data Rate Algorithm for LoRaWAN</a></div>
+        </div>
+      </div>
+      <div class="litgroup">
+        <div class="lithead">
+          <span class="code">SBU</span>
+          <span class="name">Snowball-Literatur</span>
+          <span class="desc">Über die Literaturverzeichnisse der Kernquellen gefunden. Schwerpunkt Gateway-Platzierung; dient vorwiegend als Vergleichsbasis.</span>
+        </div>
+        <div class="litlist">
+        <div class="litrow"><span class="c">SBU1</span><span class="nolink">Efficient Graph-Based Gateway Placement for Large-Scale LoRaWAN Deployments</span></div>
+        <div class="litrow"><span class="c">SBU2</span><span class="nolink">LoRaWAN Gateway Placement Model for Dynamic Internet of Things Scenarios</span></div>
+        <div class="litrow"><span class="c">SBU3</span><span class="nolink">Optimal LoRaWAN Gateway Placement for Efficient Large-Scale IoT Deployments</span></div>
+        <div class="litrow"><span class="c">SBU4</span><span class="nolink">Robust Gateway Placement for Scalable LoRaWAN</span></div>
         </div>
       </div>
     </div>
