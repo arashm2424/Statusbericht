@@ -12,6 +12,7 @@
 /* ═══════════════════════════════════════════════
    Farbwelt abgeleitet von RSSI-Heatmaps:
    Indigo = schwaches Signal · Teal = mittel · Bernstein = stark
+   Rost = Datenqualitaetsproblem
    ═══════════════════════════════════════════════ */
 :root{
   --bg:#F6F8FA;
@@ -24,12 +25,12 @@
   --weak:#3D4E8F;
   --mid:#0D8A81;
   --strong:#DE9A1C;
-  --grid-line:rgba(61,78,143,.07);
+  --alert:#B4483C;
   --r:3px;
   --pad:clamp(18px,4vw,40px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:3.4rem}
 body{
   font-family:Archivo,-apple-system,"Segoe UI",Roboto,sans-serif;
   background:var(--bg);color:var(--ink);
@@ -53,12 +54,28 @@ h2{
 h2::after{content:"";flex:1;height:1px;background:var(--rule)}
 h2 em{font-style:normal;color:var(--ink-3);font-weight:400;letter-spacing:.06em;
   font-size:.68rem;flex-shrink:0;order:3}
-section{padding:clamp(1.7rem,3.2vw,2.6rem) 0;border-top:1px solid var(--rule)}
+h2 .step{color:var(--strong);flex-shrink:0}
+section{padding:clamp(1.9rem,3.4vw,2.9rem) 0;border-top:1px solid var(--rule)}
 section:first-of-type{border-top:none}
+.lead{font-size:.92rem;color:var(--ink-2);max-width:62ch;margin-bottom:1.4rem}
+.lead b{color:var(--ink);font-weight:600}
+
+/* ── Navigationsleiste ────────────────────────── */
+.nav{position:sticky;top:0;z-index:40;background:rgba(246,248,250,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.nav .wrap{display:flex;gap:.15rem;overflow-x:auto;scrollbar-width:none;
+  padding-top:.15rem;padding-bottom:.15rem}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-3);text-decoration:none;
+  padding:.62rem .6rem;white-space:nowrap;border-bottom:2px solid transparent;
+  transition:color .15s ease,border-color .15s ease}
+.nav a:hover,.nav a:focus-visible{color:var(--ink);border-bottom-color:var(--strong)}
+.nav a b{color:var(--strong);font-weight:600;margin-right:.3rem}
 
 /* ── Kopfbanner ───────────────────────────────── */
 header{background:var(--surface);border-bottom:1px solid var(--rule);position:relative}
-.banner{position:relative;overflow:hidden;min-height:clamp(260px,34vw,400px);
+.banner{position:relative;overflow:hidden;min-height:clamp(250px,32vw,380px);
   display:flex;align-items:center}
 .banner-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .banner-bg svg{display:block;width:100%;height:100%}
@@ -99,9 +116,12 @@ h1{font-size:clamp(1.4rem,3.1vw,2.35rem);font-weight:600;line-height:1.13;
   background:var(--surface);border:1px solid var(--rule);
   border-left:3px solid var(--strong);padding:1.1rem 1.25rem;
 }
+.note.q{border-left-color:var(--alert)}
+.note.q .lbl{color:var(--alert)}
 .note .lbl{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;
   text-transform:uppercase;color:var(--strong);font-weight:600;display:block;margin-bottom:.55rem}
 .note p{font-size:.88rem;color:var(--ink-2);margin:0}
+.note p + p{margin-top:.6rem}
 
 /* ── Kennzahlen ───────────────────────────────── */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
@@ -110,7 +130,113 @@ h1{font-size:clamp(1.4rem,3.1vw,2.35rem);font-weight:600;line-height:1.13;
 .kpi .n{font-family:"IBM Plex Mono",monospace;font-size:clamp(1.4rem,3vw,1.95rem);
   font-weight:600;letter-spacing:-.03em;line-height:1;color:var(--strong)}
 .kpi .n.t{color:var(--mid)}
+.kpi .n.w{color:var(--alert)}
 .kpi .l{font-size:.75rem;color:var(--ink-2);margin-top:.5rem;line-height:1.35}
+
+/* ── Netzsteckbrief ───────────────────────────── */
+.factgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.4rem,3.5vw,2.6rem);
+  align-items:start}
+.facts{border:1px solid var(--rule);background:var(--surface)}
+.fact{display:grid;grid-template-columns:11rem 1fr;gap:1rem;
+  padding:.62rem 1rem;border-bottom:1px solid var(--rule-2);align-items:baseline}
+.fact:last-child{border-bottom:none}
+.fact .k{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3)}
+.fact .v{font-size:.85rem;color:var(--ink)}
+.fact .v small{display:block;color:var(--ink-3);font-size:.74rem;margin-top:.1rem}
+.fact .v b{font-family:"IBM Plex Mono",monospace;font-weight:600}
+
+.viz{border:1px solid var(--rule);background:var(--surface);padding:1.1rem 1.2rem}
+.viz h4{font-size:.83rem;font-weight:600;margin-bottom:.15rem}
+.viz .cap{font-size:.72rem;color:var(--ink-3);line-height:1.45;margin-bottom:.9rem}
+.viz svg{display:block;width:100%;height:auto}
+.viz + .viz{margin-top:1rem}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;margin-top:.8rem;
+  font-size:.72rem;color:var(--ink-2)}
+.legend i{display:inline-block;width:.7rem;height:.7rem;margin-right:.4rem;
+  vertical-align:baseline}
+
+/* ── Befund-Karten ────────────────────────────── */
+.finds{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--rule);border:1px solid var(--rule)}
+.find{background:var(--surface);padding:1.05rem 1.15rem}
+.find .n{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;
+  color:var(--strong);letter-spacing:-.035em;line-height:1}
+.find .n.w{color:var(--alert)}
+.find .n.t{color:var(--mid)}
+.find .u{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);margin:.55rem 0 .7rem}
+.find p{font-size:.79rem;color:var(--ink-2);line-height:1.5}
+
+/* ── Methodenvergleich ────────────────────────── */
+.cmp{width:100%;border-collapse:collapse;background:var(--surface);
+  border:1px solid var(--rule);font-size:.82rem}
+.cmp th{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);text-align:left;font-weight:600;
+  padding:.65rem .9rem;border-bottom:1px solid var(--rule);background:var(--bg)}
+.cmp td{padding:.62rem .9rem;border-bottom:1px solid var(--rule-2);
+  color:var(--ink-2);vertical-align:top}
+.cmp tr:last-child td{border-bottom:none}
+.cmp td:first-child{color:var(--ink);font-weight:500;white-space:nowrap}
+.cmp tr.pick{background:#FEFAF1}
+.cmp tr.pick td{color:var(--ink)}
+.cmp tr.pick td:first-child::after{content:"gewählt";display:inline-block;
+  font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:#8A5D08;background:#F7E4BC;
+  padding:.12rem .4rem;margin-left:.5rem;vertical-align:middle}
+.cmp .src{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--ink-3)}
+.tblwrap{overflow-x:auto}
+.tblwrap table{min-width:640px}
+
+/* ── Werkzeuge / Logos ────────────────────────── */
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+.tool{background:var(--surface);border:1px solid var(--rule);padding:1.1rem 1.2rem;
+  display:flex;flex-direction:column}
+.tool .logo{height:38px;display:flex;align-items:center;margin-bottom:.85rem}
+.tool .logo img{max-height:34px;max-width:170px;width:auto;height:auto;
+  object-fit:contain;object-position:left center}
+.tool .logo .ph{font-family:"IBM Plex Mono",monospace;font-size:.6rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  border:1px dashed var(--rule);padding:.5rem .7rem}
+.tool h3{font-size:.95rem;font-weight:600;margin-bottom:.15rem;letter-spacing:-.01em}
+.tool .vendor{font-family:"IBM Plex Mono",monospace;font-size:.63rem;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.7rem}
+.tool p{font-size:.8rem;color:var(--ink-2);margin-bottom:.85rem}
+.pmlist{margin-top:auto}
+.pm{display:grid;grid-template-columns:1.1rem 1fr;gap:.5rem;padding:.22rem 0;
+  font-size:.78rem;color:var(--ink-2);line-height:1.45}
+.pm .s{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.78rem}
+.pm.plus .s{color:var(--mid)}
+.pm.minus .s{color:var(--alert)}
+
+/* ── Pipeline ─────────────────────────────────── */
+.pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  background:var(--rule);border:1px solid var(--rule)}
+.pstep{background:var(--surface);padding:1rem 1.05rem;position:relative}
+.pstep .no{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.11em;
+  color:var(--ink-3);margin-bottom:.5rem}
+.pstep h4{font-size:.85rem;font-weight:600;margin-bottom:.4rem;line-height:1.3}
+.pstep p{font-size:.75rem;color:var(--ink-2);line-height:1.45}
+.pstep .st{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.55rem;
+  letter-spacing:.1em;text-transform:uppercase;padding:.14rem .42rem;margin-top:.6rem}
+.st.done{background:#DCF0EE;color:#08635C}
+.st.now{background:#F7E4BC;color:#8A5D08}
+.st.next{background:var(--rule-2);color:var(--ink-3)}
+
+/* ── Stufen A/B ───────────────────────────────── */
+.stages{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.stage{background:var(--surface);border:1px solid var(--rule);padding:1.15rem 1.25rem}
+.stage .tag{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;
+  text-transform:uppercase;font-weight:600;margin-bottom:.4rem}
+.stage.a .tag{color:var(--strong)} .stage.b .tag{color:var(--mid)}
+.stage h3{font-size:1rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.01em}
+.chain{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.chain span{font-size:.82rem;color:var(--ink-2);background:var(--bg);
+  border:1px solid var(--rule);padding:.45rem .7rem;position:relative}
+.chain span::after{content:"↓";position:absolute;left:1rem;bottom:-.52rem;
+  font-size:.7rem;color:var(--ink-3);line-height:1;z-index:1}
+.chain span:last-child::after{display:none}
+.stage p{font-size:.8rem;color:var(--ink-3);line-height:1.5}
 
 /* ── Fortschritt ──────────────────────────────── */
 .phases{display:grid;gap:.2rem}
@@ -152,31 +278,6 @@ h1{font-size:clamp(1.4rem,3.1vw,2.35rem);font-weight:600;line-height:1.13;
 .g-legend i{display:inline-block;width:1.4rem;height:.55rem;margin-right:.45rem;
   vertical-align:middle}
 
-/* ── Ansatz / Pipeline ────────────────────────── */
-.stages{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
-.stage{background:var(--surface);border:1px solid var(--rule);padding:1.15rem 1.25rem}
-.stage .tag{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;
-  text-transform:uppercase;font-weight:600;margin-bottom:.4rem}
-.stage.a .tag{color:var(--strong)} .stage.b .tag{color:var(--mid)}
-.stage h3{font-size:1rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.01em}
-.chain{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
-.chain span{font-size:.82rem;color:var(--ink-2);background:var(--bg);
-  border:1px solid var(--rule);padding:.45rem .7rem;position:relative}
-.chain span::after{content:"↓";position:absolute;left:1rem;bottom:-.52rem;
-  font-size:.7rem;color:var(--ink-3);line-height:1;z-index:1}
-.chain span:last-child::after{display:none}
-.stage p{font-size:.8rem;color:var(--ink-3);line-height:1.5}
-
-/* ── Erkenntnisse ─────────────────────────────── */
-.finds{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--rule);border:1px solid var(--rule)}
-.find{background:var(--surface);padding:1.05rem 1.15rem}
-.find .n{font-family:"IBM Plex Mono",monospace;font-size:1.75rem;font-weight:600;
-  color:var(--strong);letter-spacing:-.035em;line-height:1}
-.find .u{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-3);margin:.55rem 0 .7rem}
-.find p{font-size:.8rem;color:var(--ink-2);line-height:1.5}
-
 /* ── Literatur ────────────────────────────────── */
 .litgroup{margin-bottom:1.5rem}
 .litgroup:last-child{margin-bottom:0}
@@ -193,7 +294,7 @@ h1{font-size:clamp(1.4rem,3.1vw,2.35rem);font-weight:600;line-height:1.13;
   color:var(--ink-3)}
 .litrow a{font-size:.78rem;color:var(--ink-2);text-decoration:none;line-height:1.45;
   border-bottom:1px solid var(--rule);transition:color .15s ease,border-color .15s ease}
-.litrow a:hover{color:var(--strong);border-color:var(--strong)}
+.litrow a:hover,.litrow a:focus-visible{color:var(--strong);border-color:var(--strong)}
 .litrow .nolink{font-size:.78rem;color:var(--ink-2);line-height:1.45}
 .litrow .nolink::after{content:" ↗";opacity:.28;font-size:.7rem}
 
@@ -203,8 +304,12 @@ h1{font-size:clamp(1.4rem,3.1vw,2.35rem);font-weight:600;line-height:1.13;
   padding:.48rem 0;border-bottom:1px solid var(--rule-2);align-items:baseline}
 .dec .c{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;color:var(--strong)}
 .dec .t{font-size:.83rem;color:var(--ink-2)}
+.dec.new .c{color:var(--mid)}
+.dec.new .t::after{content:"neu";font-family:"IBM Plex Mono",monospace;font-size:.55rem;
+  letter-spacing:.1em;text-transform:uppercase;color:#08635C;background:#DCF0EE;
+  padding:.1rem .35rem;margin-left:.45rem;vertical-align:middle}
 
-/* ── Listen / nächste Schritte ────────────────── */
+/* ── Listen ───────────────────────────────────── */
 .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,2.8rem)}
 ul{list-style:none}
 li{font-size:.85rem;color:var(--ink-2);padding:.32rem 0 .32rem 1.1rem;
@@ -224,26 +329,31 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
   font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--ink-3);
   letter-spacing:.04em}
-.foot a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--rule)}
-.foot a:hover{color:var(--strong);border-color:var(--strong)}
+
+:focus-visible{outline:2px solid var(--strong);outline-offset:2px}
 
 /* ── Responsiv ────────────────────────────────── */
+@media(max-width:980px){
+  .factgrid{grid-template-columns:1fr}
+  .pipe{grid-template-columns:repeat(2,1fr)}
+}
 @media(max-width:900px){
   .head-text{max-width:100%}
   .banner-bg{opacity:.42}
-  .summary,.lit{grid-template-columns:1fr}
+  .summary{grid-template-columns:1fr}
   .litlist{grid-template-columns:repeat(2,1fr);gap:.15rem 1.5rem}
   .kpis,.finds{grid-template-columns:repeat(2,1fr)}
-  .stages,.decs,.ask-box .asks{grid-template-columns:1fr}
+  .stages,.decs,.ask-box .asks,.tools{grid-template-columns:1fr}
   .tri{grid-template-columns:1fr}
   .decs .dec:last-child{border-bottom:none}
 }
 @media(max-width:620px){
-  .stamp{justify-self:start}
   .ph{grid-template-columns:1fr 3rem;gap:.3rem .8rem}
   .ph .id{display:none}
   .ph .track{grid-column:1/-1;order:3;margin-top:.4rem}
   .litlist{grid-template-columns:1fr}
+  .pipe{grid-template-columns:1fr}
+  .fact{grid-template-columns:1fr;gap:.15rem}
 }
 @media(max-width:420px){
   .kpis,.finds{grid-template-columns:1fr}
@@ -254,7 +364,10 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 }
 @media print{
   body{background:#fff}
-  section{page-break-inside:avoid}
+  .nav{display:none}
+  section{page-break-inside:avoid;border-top:1px solid #ccc}
+  .banner{min-height:auto}
+  a{text-decoration:none;color:#000}
 }
 </style>
 </head>
@@ -264,7 +377,6 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <header>
   <div class="banner">
 
-    <!-- Hintergrund: Gateways und Geräte, ausschließlich rechte Bildhälfte -->
     <div class="banner-bg" aria-hidden="true">
       <svg viewBox="0 0 1200 420" preserveAspectRatio="xMaxYMid slice">
         <defs>
@@ -360,10 +472,26 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
   <div class="stampbar">
     <div class="wrap">
       <span class="k">Letzte Aktualisierung</span>
-      <span class="v"><span class="dot"></span>14. August 2026</span>
+      <span class="v"><span class="dot"></span>25. August 2026</span>
     </div>
   </div>
 </header>
+
+<!-- ══════════════ NAVIGATION ══════════════ -->
+<nav class="nav" aria-label="Abschnitte">
+  <div class="wrap">
+    <a href="#bestand"><b>01</b>Ausgangslage</a>
+    <a href="#befunde"><b>02</b>Befunde</a>
+    <a href="#methoden"><b>03</b>Methodenvergleich</a>
+    <a href="#werkzeuge"><b>04</b>Werkzeuge</a>
+    <a href="#daten"><b>05</b>Datenaufbereitung</a>
+    <a href="#modell"><b>06</b>Erste Kalibrierung</a>
+    <a href="#pipeline"><b>07</b>Weiteres Vorgehen</a>
+    <a href="#stand">Stand</a>
+    <a href="#literatur">Literatur</a>
+    <a href="#offen">Offene Punkte</a>
+  </div>
+</nav>
 
 <!-- ══════════════ KURZFASSUNG ══════════════ -->
 <section>
@@ -371,7 +499,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
     <div class="summary">
       <div>
         <h3>Worum es geht</h3>
-        <p>Wobcom betreibt in Wolfsburg ein LoRaWAN-Netz mit rund 33.000 Smart-Metering-Geräten.
+        <p>Wobcom betreibt in Wolfsburg ein LoRaWAN-Netz mit rund 34.000 Smart-Metering-Geräten.
         Soll das Netz erweitert werden, stellt sich die Frage: <b>Wo soll das nächste Gateway hin?</b>
         Anders als im Mobilfunk existiert für LoRaWAN kein etabliertes Planungswerkzeug — die
         bisherige Standortwahl erfolgte erfahrungsbasiert und richtete sich nach bereits
@@ -387,42 +515,563 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
         verzerrt. Das Netz regelt Sendeleistung und Spreading Factor automatisch nach. Man misst
         also nicht die Funkumgebung, sondern die Reaktion des Netzes darauf. Die Arbeit rechnet
         deshalb auf Größen um, die von dieser Regelung unabhängig sind.</p>
+        <p>Wie stark dieser Effekt tatsächlich ist, zeigt sich inzwischen in den echten
+        Betriebsdaten — siehe Abschnitt 06.</p>
       </div>
     </div>
 
-    <!-- BEARBEITEN: Kennzahlen -->
     <div class="kpis">
-      <div class="kpi"><div class="n">~33.000</div><div class="l">Geräte in der Flotte</div></div>
-      <div class="kpi"><div class="n">96 %</div><div class="l">erreichen nur ein Gateway</div></div>
-      <div class="kpi"><div class="n t">22</div><div class="l">Fachartikel gesichtet</div></div>
-      <div class="kpi"><div class="n t">10</div><div class="l">dokumentierte Methodenentscheidungen</div></div>
+      <div class="kpi"><div class="n">34.345</div><div class="l">Geräte in der Flotte (Datenbankstand)</div></div>
+      <div class="kpi"><div class="n">1,39 Mio.</div><div class="l">ausgewertete Funkbeobachtungen (7 Tage)</div></div>
+      <div class="kpi"><div class="n t">25</div><div class="l">Fachartikel gesichtet und eingeordnet</div></div>
+      <div class="kpi"><div class="n t">19</div><div class="l">dokumentierte Methodenentscheidungen</div></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ FORTSCHRITT ══════════════ -->
-<section>
+<!-- ══════════════ 01 · AUSGANGSLAGE ══════════════ -->
+<section id="bestand">
   <div class="wrap">
-    <h2>Fortschritt <em>Stand August 2026</em></h2>
-    <!-- BEARBEITEN: Prozentwerte in style="--p:XX%" anpassen -->
+    <h2><span class="step">01</span> Ausgangslage im Bestandsnetz <em>Stand 24.08.2026, direkt aus der Betriebsdatenbank</em></h2>
+    <p class="lead">Erster Arbeitsschritt war die Bestandsaufnahme: <b>Was steht heute im Netz,
+    wie funkt es, und nach welcher Logik sind die vorhandenen Gateways dorthin gekommen?</b>
+    Alle Zahlen unten stammen aus einem Lesezugriff auf die Betriebsdatenbank, nicht aus
+    Schätzungen.</p>
+
+    <div class="factgrid">
+      <div class="facts">
+        <div class="fact"><div class="k">Geräte gesamt</div>
+          <div class="v"><b>34.345</b><small>Wärmezähler, Wasserzähler, Heizkostenverteiler</small></div></div>
+        <div class="fact"><div class="k">Netztechnik</div>
+          <div class="v"><b>&gt; 99,9 % LoRaWAN</b><small>nur 5 Geräte mit NB-IoT-Historie (0,01 %) — für die Arbeit ausgeschlossen, da sie über Mobilfunkmasten funken</small></div></div>
+        <div class="fact"><div class="k">Frequenzband</div>
+          <div class="v"><b>868 MHz (EU868)</b><small>lizenzfreies ISM-Band, alle Geräte einheitlich</small></div></div>
+        <div class="fact"><div class="k">Aktive Gateways</div>
+          <div class="v"><b>32</b><small>in der ausgewerteten Woche empfangend; Antennenhöhen nicht dokumentiert</small></div></div>
+        <div class="fact"><div class="k">Hersteller</div>
+          <div class="v">Landis+Gyr, Zenner, Kamstrup, Sensus<small>heterogene Hardware, teils über Elvaco-Bridge angebunden</small></div></div>
+        <div class="fact"><div class="k">Datenhistorie</div>
+          <div class="v"><b>Dez. 2021 – heute</b><small>ca. 180 Mio. Zeilen Rohdaten in PostgreSQL / TimescaleDB</small></div></div>
+        <div class="fact"><div class="k">Standortwahl bisher</div>
+          <div class="v">erfahrungsbasiert<small>keine dokumentierte Funkplanung; maßgeblich war die Verfügbarkeit vorhandener Glasfaser-POPs mit Strom und Backhaul</small></div></div>
+        <div class="fact"><div class="k">Einbausituation</div>
+          <div class="v">überwiegend Indoor<small>Keller- und Hausanschlussräume; Geschossinformation liegt nicht vor</small></div></div>
+      </div>
+
+      <div>
+        <div class="viz">
+          <h4>Wie viele Geräte sind überhaupt verortbar?</h4>
+          <p class="cap">Ohne Koordinate lässt sich ein Gerät weder einem Funkmodell noch einer
+          Ausbaufläche zuordnen. Das ist die harte Grenze der räumlichen Analyse.</p>
+          <svg viewBox="0 0 260 140" role="img" aria-label="Ringdiagramm: 69,5 Prozent der Geräte mit gültiger Koordinate">
+            <g transform="translate(70,70)">
+              <circle r="54" fill="none" stroke="#EDF1F5" stroke-width="20"/>
+              <circle r="54" fill="none" stroke="#0D8A81" stroke-width="20"
+                      stroke-dasharray="235.8 339.3" transform="rotate(-90)"/>
+              <circle r="54" fill="none" stroke="#DE9A1C" stroke-width="20"
+                      stroke-dasharray="51.9 339.3" stroke-dashoffset="-235.8" transform="rotate(-90)"/>
+              <circle r="54" fill="none" stroke="#B4483C" stroke-width="20"
+                      stroke-dasharray="51.6 339.3" stroke-dashoffset="-287.7" transform="rotate(-90)"/>
+              <text y="-2" text-anchor="middle" font-family="IBM Plex Mono, monospace"
+                    font-size="19" font-weight="600" fill="#0F1926">69,5 %</text>
+              <text y="14" text-anchor="middle" font-family="IBM Plex Mono, monospace"
+                    font-size="7.5" letter-spacing=".08em" fill="#7A8AA1">VERORTBAR</text>
+            </g>
+            <g font-family="Archivo, sans-serif" font-size="8.6" fill="#41536B">
+              <rect x="146" y="34" width="9" height="9" fill="#0D8A81"/>
+              <text x="160" y="41.5">23.874 mit Koordinate</text>
+              <rect x="146" y="60" width="9" height="9" fill="#DE9A1C"/>
+              <text x="160" y="67.5">5.254 Adresse, keine Koordinate</text>
+              <rect x="146" y="86" width="9" height="9" fill="#B4483C"/>
+              <text x="160" y="93.5">5.217 ohne Standortangabe</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="viz">
+          <h4>Verteilung der Spreading Factors</h4>
+          <p class="cap">1,39 Mio. Beobachtungen aus einer Woche. Ein hoher SF bedeutet: Das Netz
+          musste die Reichweite erkaufen — langsamer, energieintensiver, mehr Luftzeit.
+          Rund 24 % der Übertragungen laufen auf SF10 bis SF12.</p>
+          <svg viewBox="0 0 260 96" role="img" aria-label="Balkendiagramm der Spreading-Factor-Verteilung">
+            <g font-family="IBM Plex Mono, monospace" font-size="7.5">
+              <!-- SF7 -->
+              <text x="0" y="13" fill="#7A8AA1">SF7</text>
+              <rect x="26" y="6" width="140" height="9" fill="#0D8A81"/>
+              <text x="171" y="13" fill="#41536B">58,2 %</text>
+              <!-- SF8 -->
+              <text x="0" y="28" fill="#7A8AA1">SF8</text>
+              <rect x="26" y="21" width="23.8" height="9" fill="#0D8A81" opacity=".72"/>
+              <text x="171" y="28" fill="#41536B">9,9 %</text>
+              <!-- SF9 -->
+              <text x="0" y="43" fill="#7A8AA1">SF9</text>
+              <rect x="26" y="36" width="20.2" height="9" fill="#0D8A81" opacity=".55"/>
+              <text x="171" y="43" fill="#41536B">8,4 %</text>
+              <!-- SF10 -->
+              <text x="0" y="58" fill="#7A8AA1">SF10</text>
+              <rect x="26" y="51" width="22.1" height="9" fill="#DE9A1C" opacity=".7"/>
+              <text x="171" y="58" fill="#41536B">9,2 %</text>
+              <!-- SF11 -->
+              <text x="0" y="73" fill="#7A8AA1">SF11</text>
+              <rect x="26" y="66" width="12.5" height="9" fill="#DE9A1C" opacity=".85"/>
+              <text x="171" y="73" fill="#41536B">5,2 %</text>
+              <!-- SF12 -->
+              <text x="0" y="88" fill="#7A8AA1">SF12</text>
+              <rect x="26" y="81" width="22.1" height="9" fill="#B4483C"/>
+              <text x="171" y="88" fill="#41536B">9,2 %</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 02 · BEFUNDE ══════════════ -->
+<section id="befunde">
+  <div class="wrap">
+    <h2><span class="step">02</span> Was im Bestandsnetz auffällt <em>Beobachtungen, im Rahmen der Arbeit noch zu validieren</em></h2>
+    <p class="lead">Diese Befunde sind der eigentliche Anlass der Arbeit. Sie zeigen, dass die
+    naheliegenden Kennzahlen das Problem nicht sauber beschreiben — und dass im Bestand ein
+    strukturelles Ausfallrisiko steckt.</p>
+
+    <div class="finds">
+      <div class="find">
+        <div class="n w">−0,40</div>
+        <div class="u">RSSI ↔ gültige Daten</div>
+        <p>Starke Signale garantieren keine verwertbaren Messwerte — die Korrelation ist sogar
+        leicht negativ. Signalstärke allein ist als Qualitätsmaß ungeeignet.</p>
+      </div>
+      <div class="find">
+        <div class="n">−0,79</div>
+        <div class="u">SNR ↔ Spreading Factor</div>
+        <p>ADR arbeitet nachweislich: Das Netz hebt bei schlechter Verbindung den SF an. Genau
+        diese Regelung verzerrt jede naive Auswertung von RSSI und SNR.</p>
+      </div>
+      <div class="find">
+        <div class="n w">4 % … 42 %</div>
+        <div class="u">Mehrfachversorgung — offen</div>
+        <p>Zwei Auswertungen widersprechen sich: ein älterer Export nennt 4,05 %, die neue
+        7-Tage-Stichprobe 41,9 %. Bewusst offengelegt statt vorschnell zusammengeführt.</p>
+      </div>
+      <div class="find">
+        <div class="n t">vollständig</div>
+        <div class="u">Rohdatenbestand</div>
+        <p>Die Datenbank speichert alle empfangenden Gateways je Übertragung, nicht nur das
+        stärkste. Bessere Ausgangslage als erwartet — Grundlage der eigenen Validierungsidee.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:1.4rem" class="note q">
+      <span class="lbl">Strukturelles Risiko im Bestand</span>
+      <p>Ein erheblicher Teil der Geräte erreicht nur ein einziges Gateway. Fällt es aus, sind
+      diese Geräte offline — ohne dass es im Betrieb sofort auffällt. Weil die genaue Höhe
+      dieses Anteils derzeit zwischen zwei Auswertungen strittig ist, wird er in der Arbeit
+      erst nach Klärung der Messmethodik beziffert. Unabhängig davon ist die Konsequenz für
+      die Methodik bereits gezogen: Redundanz wird als eigenständiges Optimierungsziel geführt
+      und nicht nur Flächenabdeckung maximiert.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 03 · METHODENVERGLEICH ══════════════ -->
+<section id="methoden">
+  <div class="wrap">
+    <h2><span class="step">03</span> Methodenvergleich aus der Literatur <em>25 Arbeiten gesichtet, Auswahl begründet</em></h2>
+    <p class="lead">Nach der Bestandsaufnahme folgte die Literaturarbeit. Für beide Kernfragen —
+    <b>wie schätzt man Funkqualität im Raum?</b> und <b>wie wählt man daraus Standorte aus?</b> —
+    wurden die gängigen Verfahren gegeneinander geprüft, statt das naheliegendste zu nehmen.</p>
+
+    <div class="tblwrap">
+      <table class="cmp">
+        <caption class="visually-hidden"></caption>
+        <thead>
+          <tr><th>Ausbreitungsmodell</th><th>Wofür es gedacht ist</th><th>Warum es hier (nicht) passt</th><th>Quelle</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Parabolic Equation</td>
+            <td>Großräumige Ausbreitung über unebenem Gelände</td>
+            <td>Methodisch falscher Ansatz für dicht bebautes Stadtgebiet.</td>
+            <td class="src">P17</td>
+          </tr>
+          <tr>
+            <td>3D Ray Tracing</td>
+            <td>Deterministische Wellenausbreitung, höchste Genauigkeit</td>
+            <td>Bräuchte Innenraumgeometrie für 34.000 Indoor-Geräte. Rechenzeit je Szenario Minuten bis über eine Stunde; Genauigkeit hängt an Umgebungsdaten, die hier gar nicht vorliegen.</td>
+            <td class="src">P09, P17</td>
+          </tr>
+          <tr>
+            <td>Okumura-Hata</td>
+            <td>Mobilfunkplanung, empirische Umgebungsklassen</td>
+            <td>Für andere Frequenzen und Zellgrößen entwickelt, Messbasis aus Tokio. Bleibt als Vergleichs-Baseline im Rennen, nicht als Hauptmodell.</td>
+            <td class="src">P09, O2</td>
+          </tr>
+          <tr>
+            <td>Dominant Path Model</td>
+            <td>Vereinfachte Mehrwegeausbreitung, 2,5D-Gebäudemodell</td>
+            <td>Fachlich ein guter Mittelweg und in kommerziellen Werkzeugen im Einsatz — erfordert aber Spezialsoftware oder Eigenentwicklung außerhalb des Rahmens. Als Ausblick benannt.</td>
+            <td class="src">P01</td>
+          </tr>
+          <tr class="pick">
+            <td>Log-distance, kalibriert</td>
+            <td>Empirisch, Parameter aus eigenen Messdaten geschätzt</td>
+            <td>Nutzt die eigentliche Stärke dieses Projekts: sehr viele echte Messpunkte bei fehlendem Geometriemodell. Lokale Kalibrierung senkt den Fehler in vergleichbaren Arbeiten um rund zwei Drittel. Interpretierbar und im Zeitrahmen machbar.</td>
+            <td class="src">O1, P07, P17</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tblwrap" style="margin-top:1.2rem">
+      <table class="cmp">
+        <thead>
+          <tr><th>Optimierungsverfahren</th><th>Vorteil</th><th>Nachteil</th><th>Quelle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>MILP (exakt)</td><td>Garantiert optimale Lösung</td><td>Skaliert schlecht auf realistische Problemgrößen.</td><td class="src">P16</td></tr>
+          <tr><td>GA / EPSO</td><td>Flexible Zielfunktionen</td><td>Keine Gütegarantie, nicht deterministisch, langsam. Bleibt als Vergleichs-Baseline.</td><td class="src">O1</td></tr>
+          <tr><td>Bayesian Optimization</td><td>Kommt mit wenigen Auswertungen aus</td><td>Für eine diskrete, überschaubare Kandidatenmenge wenig geeignet.</td><td class="src">—</td></tr>
+          <tr class="pick"><td>Greedy</td><td>Bewiesene (1 − 1/e)-Gütegarantie, deterministisch, schnell</td><td>Nicht global optimal — dafür bei gleicher Eingabe immer dasselbe Ergebnis und für jeden Schritt begründbar. Genau das ist für eine Planungsempfehlung entscheidend.</td><td class="src">P15, P06</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stages" style="margin-top:1.5rem">
+      <div class="stage a">
+        <div class="tag">Stufe A</div>
+        <h3>Funkqualität im Raum schätzen</h3>
+        <div class="chain">
+          <span>Betriebsdaten aus dem laufenden Netz</span>
+          <span>Umrechnung auf ADR-unabhängige Größen (ESP, Pfadverlust)</span>
+          <span>Ausbreitungsmodell mit eigenen Daten kalibrieren</span>
+          <span>Ergänzung um Kontextdaten: Bebauung, Landnutzung, Gelände</span>
+        </div>
+        <p>Statt Modellparameter aus der Literatur zu übernehmen, werden sie aus den realen
+        Wolfsburger Messdaten geschätzt. Kontextdaten kommen aus OpenStreetMap und öffentlichen
+        Höhenmodellen.</p>
+      </div>
+      <div class="stage b">
+        <div class="tag">Stufe B</div>
+        <h3>Standorte bewerten und reihen</h3>
+        <div class="chain">
+          <span>Kandidaten: real verfügbare POP-Standorte</span>
+          <span>Abdeckungsprognose je Kandidat</span>
+          <span>Greedy-Optimierung, primär Versorgung, sekundär Redundanz</span>
+          <span>Rangliste mit Unsicherheitsangabe</span>
+        </div>
+        <p>Die Trennung der beiden Stufen ist Absicht: Fällt das Ergebnis schwach aus, lässt sich
+        unterscheiden, ob das Ausbreitungsmodell oder der Optimierer die Ursache ist.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 04 · INDUSTRIELLE WERKZEUGE ══════════════ -->
+<section id="werkzeuge">
+  <div class="wrap">
+    <h2><span class="step">04</span> Kommerzielle Planungswerkzeuge <em>geprüft und abgegrenzt</em></h2>
+    <p class="lead">Vor der Eigenentwicklung wurde geprüft, ob am Markt bereits ein passendes
+    Werkzeug existiert. Ergebnis: Es gibt professionelle Systeme — sie decken den hier
+    vorliegenden Fall aber nur teilweise ab. <b>Die Abgrenzung ist Teil der wissenschaftlichen
+    Begründung dieser Arbeit</b>, nicht nur eine Marktschau.</p>
+
+    <div class="tools">
+      <div class="tool">
+        <!-- LOGO-SLOT 1 -->
+        <div class="logo"><img src="assets/logos/actility.png" alt="Actility"
+             onerror="this.outerHTML='&lt;span class=\'ph\'&gt;Logo: Actility&lt;/span&gt;'"></div>
+        <h3>ThingPark Network Coverage Tool</h3>
+        <div class="vendor">Actility · SaaS, proprietär</div>
+        <p>Sagt Außenabdeckung für LoRaWAN-Gateways anhand von Topografie und Antennenmustern
+        voraus, erzeugt Heatmaps und wählt automatisch die minimale Standortzahl aus einer
+        Kandidatenliste. Prognosen lassen sich gegen reale Geräte-KPIs abgleichen.</p>
+        <div class="pmlist">
+          <div class="pm plus"><span class="s">+</span><span>Kandidatenauswahl zur Zielerreichung — strukturell dasselbe Prinzip wie Stufe B dieser Arbeit</span></div>
+          <div class="pm plus"><span class="s">+</span><span>Abgleich der Prognose mit echten Betriebsdaten bereits vorgesehen</span></div>
+          <div class="pm minus"><span class="s">−</span><span>Herstellerseitig ausdrücklich <b>nicht</b> für Indoor-Szenarien geeignet — genau der hier vorliegende Fall</span></div>
+          <div class="pm minus"><span class="s">−</span><span>Proprietäres Prognosemodell, nicht einsehbar und nicht nachvollziehbar</span></div>
+        </div>
+      </div>
+
+      <div class="tool">
+        <!-- LOGO-SLOT 2 -->
+        <div class="logo"><img src="assets/logos/forsk-atoll.png" alt="Forsk Atoll"
+             onerror="this.outerHTML='&lt;span class=\'ph\'&gt;Logo: Forsk Atoll&lt;/span&gt;'"></div>
+        <h3>Atoll — LPWA/IoT-Modul</h3>
+        <div class="vendor">Forsk · Multi-RAT-Planungsplattform</div>
+        <p>Das Automatic-Cell-Planning-Modul wählt Standorte für LPWA-Netze nach Abdeckungszielen
+        <em>und</em> Server-Redundanz aus, auch für bereits betriebene Netze. Kombiniert
+        Live-Netzdaten mit Vorhersagen und adressiert laut Hersteller auch Deep-Indoor-Szenarien.</p>
+        <div class="pmlist">
+          <div class="pm plus"><span class="s">+</span><span>Führt Redundanz als eigenständiges Optimierungsziel — hat die K-Coverage-Erweiterung dieser Arbeit direkt motiviert</span></div>
+          <div class="pm plus"><span class="s">+</span><span>Für Bestandsnetze und nicht nur für die Grüne-Wiese-Planung ausgelegt</span></div>
+          <div class="pm minus"><span class="s">−</span><span>Proprietäres Blackbox-System mit hohem Lizenz- und Einarbeitungsaufwand</span></div>
+          <div class="pm minus"><span class="s">−</span><span>Benötigt kommerzielle GIS-Daten (Clutter, 3D-Gebäude), die hier nicht vorliegen</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1.3rem">
+      <span class="lbl">Warum trotzdem ein eigenes Verfahren</span>
+      <p>Zwei Punkte rechtfertigen den Eigenbau. <b>Erstens die Indoor-Lücke:</b> Das am nächsten
+      vergleichbare Werkzeug schließt Indoor-Szenarien ausdrücklich aus — die hier untersuchte
+      Flotte besteht aber fast vollständig aus Zählern in Gebäuden. <b>Zweitens die
+      Nachvollziehbarkeit:</b> Beide Systeme sind Blackboxes, deren Prognosemodelle nicht
+      offenliegen. Die Aufgabenstellung fordert jedoch begründete, überprüfbare Empfehlungen.</p>
+      <p>Aus beiden Werkzeugen wurde konzeptionell gelernt — die Idee der automatischen
+      Kandidatenauswahl und die Behandlung von Redundanz als eigenes Ziel. Übernommen wird
+      ausschließlich das Prinzip, kein Code und kein Modell.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 05 · DATENAUFBEREITUNG ══════════════ -->
+<section id="daten">
+  <div class="wrap">
+    <h2><span class="step">05</span> Datenzugang und Datenqualität <em>Lesezugriff eingerichtet, Rohdaten verifiziert</em></h2>
+    <p class="lead">Der Lesezugriff auf die Betriebsdatenbank steht seit dem 24.08.2026. Vor jeder
+    Analyse steht jetzt die Bereinigung: <b>Die Rohdaten enthalten systematische Fehler, die eine
+    naive Auswertung verfälschen würden.</b> Jede Gegenmaßnahme ist als Entscheidung dokumentiert.</p>
+
+    <div class="tblwrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>Befund in den Rohdaten</th><th>Umfang</th><th>Bewertung und Gegenmaßnahme</th><th>Nr.</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Unplausible RSSI-Werte</td>
+            <td>91 Zeilen je Woche, Bereich +117 bis +127</td>
+            <td>RSSI ist physikalisch negativ. Die enge, wiederkehrende Wertespanne über mehrere Hersteller und Gateways spricht für einen kodierten Fehlerwert im Dekodierpfad, nicht für Rauschen. Plausibilitätsfilter vor jeder Kalibrierung.</td>
+            <td class="src">E18</td>
+          </tr>
+          <tr>
+            <td>Gateway-GPS-Ausreißer</td>
+            <td>0,2 % der Zeilen, ein Gateway</td>
+            <td>Gateways melden ihre Position live per GPS statt fest hinterlegt; Ausreißer bis zu Koordinate 0/0 im Atlantik. Bounding-Box-Filter auf den Wolfsburger Raum.</td>
+            <td class="src">E17</td>
+          </tr>
+          <tr>
+            <td>Fehlende Gerätekoordinaten</td>
+            <td>30,5 % aller Geräte</td>
+            <td>Davon 5.254 mit Adresse, aber ohne Geokodierung — 99,7 % von ihnen zusätzlich ohne Stadtangabe. Das deutet auf eine systematische Lücke in der Adresserfassung hin, nicht auf Einzelfälle. Zu klären, bevor daraus auf Funklöcher geschlossen wird.</td>
+            <td class="src">—</td>
+          </tr>
+          <tr>
+            <td>Positionen nur gebäudegenau</td>
+            <td>alle verorteten Geräte</td>
+            <td>Mehrere Geräte einer Adresse teilen dieselbe Koordinate bei unterschiedlichem RSSI. Verletzt die Unabhängigkeitsannahme der Regression — Lösungsvariante noch offen. Positiv nutzbar: liefert eine empirische Schätzung der Gebäudedämpfung.</td>
+            <td class="src">B1</td>
+          </tr>
+          <tr>
+            <td>Wechselndes JSON-Format</td>
+            <td>zwei Formatwechsel seit Feb. 2026</td>
+            <td>Entgegen der ursprünglichen Annahme keine einmalige ChirpStack-Migration: v3 → v4 vor Februar, am 05.06.2026 zurück zu v3. Eine reine Datumsverzweigung würde stillschweigend leere Werte liefern — deshalb Erkennung je Datensatz.</td>
+            <td class="src">E19</td>
+          </tr>
+          <tr>
+            <td>Sendeleistung nicht enthalten</td>
+            <td>alle Uplinks</td>
+            <td>Verifiziert: Das Uplink-Event enthält keine TX-Power. Die Arbeit rechnet deshalb mit relativem Pfadverlust und behandelt die Sendeleistung als konstanten unbekannten Offset.</td>
+            <td class="src">B4</td>
+          </tr>
+          <tr>
+            <td>Abfragen brechen ab</td>
+            <td>bei Zeiträumen &gt; 1 Tag</td>
+            <td>Der Zugriff läuft über eine Streaming-Replica, die lang laufende Abfragen abbricht. Verbindliches Vorgehen: tageweise Extraktion mit je neuer Verbindung. Verifiziert mit 7 von 7 Tagen und 1,39 Mio. Zeilen ohne Abbruch.</td>
+            <td class="src">E16</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note q" style="margin-top:1.3rem">
+      <span class="lbl">Datenschutz von Anfang an</span>
+      <p>Die Rohdaten enthalten Adressen, Koordinaten und Gerätekennungen. Es gilt: Verarbeitung
+      lokal, keine Rohdaten mit Adressbezug oder DevEUI ins Repository, Kennungen pseudonymisiert.
+      Eine räumliche Gitteraggregation ist als zusätzliche Schutzmaßnahme vorgesehen — sie löst
+      zugleich das Problem der gebäudegenauen Positionen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 06 · ERSTE KALIBRIERUNG ══════════════ -->
+<section id="modell">
+  <div class="wrap">
+    <h2><span class="step">06</span> Erste Kalibrierung mit echten Daten <em>vorläufig, 7-Tage-Stichprobe</em></h2>
+    <p class="lead">Der erste Durchlauf des Ausbreitungsmodells auf echten Betriebsdaten liefert
+    ein <b>physikalisch unplausibles Ergebnis — und genau das ist der interessante Befund.</b>
+    Er belegt empirisch, was die Aufgabenstellung als Ausgangsthese formuliert hat.</p>
+
+    <div class="factgrid">
+      <div class="viz">
+        <h4>Gemessener gegen erwarteten Pfadverlustanstieg</h4>
+        <p class="cap">Schematische Darstellung. Der aus den Betriebsdaten geschätzte Exponent
+        n ≈ 1,14 liegt deutlich unter dem physikalisch erwarteten Bereich für städtische Umgebung
+        (n ≈ 2,7 – 3,5) und sogar unter dem Freiraumwert n = 2.</p>
+        <svg viewBox="0 0 300 168" role="img" aria-label="Vergleich der Pfadverlustkurven">
+          <g stroke="#EDF1F5" stroke-width="1">
+            <line x1="34" y1="20" x2="288" y2="20"/><line x1="34" y1="55" x2="288" y2="55"/>
+            <line x1="34" y1="90" x2="288" y2="90"/><line x1="34" y1="125" x2="288" y2="125"/>
+          </g>
+          <line x1="34" y1="140" x2="288" y2="140" stroke="#DFE5EC" stroke-width="1"/>
+          <line x1="34" y1="14" x2="34" y2="140" stroke="#DFE5EC" stroke-width="1"/>
+
+          <!-- erwartete Kurve n=3.0 -->
+          <path d="M34 132 L288 26" fill="none" stroke="#3D4E8F" stroke-width="2" stroke-dasharray="4 3"/>
+          <!-- Freiraum n=2 -->
+          <path d="M34 132 L288 61" fill="none" stroke="#7A8AA1" stroke-width="1.4" stroke-dasharray="2 3"/>
+          <!-- gemessen n=1.14 -->
+          <path d="M34 132 L288 92" fill="none" stroke="#B4483C" stroke-width="2.6"/>
+
+          <g font-family="IBM Plex Mono, monospace" font-size="7.4" fill="#41536B">
+            <text x="292" y="28" text-anchor="end" fill="#3D4E8F">n ≈ 3,0  städtisch erwartet</text>
+            <text x="292" y="63" text-anchor="end" fill="#7A8AA1">n = 2  Freiraum</text>
+            <text x="292" y="88" text-anchor="end" fill="#B4483C" font-weight="600">n = 1,14  gemessen</text>
+            <text x="34" y="152" fill="#7A8AA1">log(Distanz) →</text>
+          </g>
+          <text x="14" y="80" font-family="IBM Plex Mono, monospace" font-size="7.4" fill="#7A8AA1"
+                transform="rotate(-90 14 80)" text-anchor="middle">Pfadverlust →</text>
+        </svg>
+      </div>
+
+      <div>
+        <div class="note q">
+          <span class="lbl">Der Befund und seine Einordnung</span>
+          <p>Ein zu flacher Anstieg heißt: Weiter entfernte Geräte sehen im Signal <em>besser</em>
+          aus, als sie physikalisch dürften. Das ist genau der erwartete ADR-Effekt — das Netz
+          hebt bei schlechter Verbindung Spreading Factor und Sendeleistung an und kompensiert
+          die Distanz, bevor sie sichtbar wird.</p>
+          <p><b>Wichtiger Gegentest:</b> Nach Anwendung des Plausibilitätsfilters blieb der
+          Exponent praktisch unverändert (1,14 vor und nach Filterung), obwohl 3,2 % der Zeilen
+          entfernt wurden. Der niedrige Wert lässt sich damit <b>nicht</b> auf schlechte
+          Datenqualität zurückführen — das stützt die ADR-Erklärung.</p>
+        </div>
+
+        <div class="viz" style="margin-top:1rem">
+          <h4>Was der Filter dennoch bewirkt hat</h4>
+          <p class="cap">Die Ausreißer beeinflussten nicht die Steigung, aber massiv die
+          Fehlerverteilung. Für die spätere Bestimmung von Sicherheitsaufschlägen ist das
+          entscheidend.</p>
+          <div class="facts" style="border:none">
+            <div class="fact" style="padding-left:0;padding-right:0">
+              <div class="k">Kurtosis</div><div class="v"><b>15,6 → 4,4</b></div></div>
+            <div class="fact" style="padding-left:0;padding-right:0">
+              <div class="k">Residuenspanne</div><div class="v"><b>−243 … 59 dB → −61 … 59 dB</b></div></div>
+            <div class="fact" style="padding-left:0;padding-right:0">
+              <div class="k">Bestimmtheitsmaß</div><div class="v"><b>R² ≈ 0,18</b><small>ein reines Distanzmodell erklärt die Varianz erwartungsgemäß nicht — Kontextdaten sind der nächste Schritt</small></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1.3rem">
+      <span class="lbl">Nächster Diagnoseschritt</span>
+      <p>Kalibrierung getrennt je Spreading Factor. Trifft die ADR-Erklärung zu, muss sich
+      innerhalb einzelner SF-Gruppen — wo die Kopplung zwischen Linkqualität und Konfiguration
+      reduziert ist — ein plausiblerer Exponent zeigen. Das ist ein überprüfbarer Test, kein
+      Plausibilitätsargument. Die Umrechnung auf ADR-robuste Größen wird vor der endgültigen
+      Festlegung mit Prof. Neumann besprochen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 07 · PIPELINE ══════════════ -->
+<section id="pipeline">
+  <div class="wrap">
+    <h2><span class="step">07</span> Weiteres Vorgehen <em>Arbeitspipeline, jede Stufe einzeln überprüfbar</em></h2>
+    <p class="lead">Die Reihenfolge ist bewusst gewählt: Erst wenn eine Stufe belastbar ist, wird
+    die nächste gebaut. Die beiden Validierungsschritte am Ende prüfen das Verfahren gegen echte
+    Messungen — <b>ohne dass dafür ein Testgateway aufgestellt werden muss.</b></p>
+
+    <div class="pipe">
+      <div class="pstep">
+        <div class="no">STUFE 1</div>
+        <h4>Daten bereinigen und validieren</h4>
+        <p>Plausibilitätsfilter, Bounding Box, Formaterkennung je Datensatz, Umgang mit fehlenden
+        Koordinaten festlegen.</p>
+        <span class="st now">läuft</span>
+      </div>
+      <div class="pstep">
+        <div class="no">STUFE 2</div>
+        <h4>Pfadverlust modellieren</h4>
+        <p>ESP und relativer Pfadverlust berechnen, Log-distance kalibrieren, getrennt je
+        Spreading Factor gegenprüfen.</p>
+        <span class="st now">läuft</span>
+      </div>
+      <div class="pstep">
+        <div class="no">STUFE 3</div>
+        <h4>Kontextdaten ergänzen</h4>
+        <p>Gebäudedichte, Hindernisse auf der Strecke, Landnutzung und Geländehöhe aus OSM und
+        Höhenmodell. Nur was statistisch etwas erklärt, bleibt im Modell.</p>
+        <span class="st next">geplant</span>
+      </div>
+      <div class="pstep">
+        <div class="no">STUFE 4</div>
+        <h4>Standorte bewerten</h4>
+        <p>Abdeckungsprognose für reale POP-Kandidaten, Greedy-Auswahl mit Redundanz als
+        Sekundärziel, Rangliste mit Unsicherheit.</p>
+        <span class="st next">geplant</span>
+      </div>
+      <div class="pstep">
+        <div class="no">STUFE 5</div>
+        <h4>Validieren</h4>
+        <p>Zwei unabhängige Tests gegen echte Messdaten — siehe unten.</p>
+        <span class="st next">geplant</span>
+      </div>
+    </div>
+
+    <div class="stages" style="margin-top:1.4rem">
+      <div class="stage a">
+        <div class="tag">Validierung 1</div>
+        <h3>Test über mehrfach empfangene Geräte</h3>
+        <p style="color:var(--ink-2);font-size:.85rem;margin-bottom:.7rem">Manche Geräte werden
+        gleichzeitig von mehreren Gateways empfangen. Für sie gilt: derselbe Sender, derselbe
+        Zeitpunkt, dieselbe Sendeleistung — nur unterschiedliche Empfänger.</p>
+        <p>Damit lässt sich direkt prüfen, wie gut ein nur auf Gateway A kalibriertes Modell das
+        tatsächlich an Gateway B gemessene Signal vorhersagt. In der gesichteten Literatur wurde
+        dieser Ansatz bisher nicht als Validierungsmethode gefunden — potenziell ein eigener
+        Beitrag der Arbeit.</p>
+      </div>
+      <div class="stage b">
+        <div class="tag">Validierung 2</div>
+        <h3>Gateway testweise entfernen</h3>
+        <p style="color:var(--ink-2);font-size:.85rem;margin-bottom:.7rem">Ein bestehendes Gateway
+        wird rechnerisch aus dem Datensatz entfernt, das Modell auf den übrigen neu kalibriert —
+        und muss dann vorhersagen, welche Geräte das entfernte Gateway erreicht hätte.</p>
+        <p><b>Wichtige Einschränkung, bewusst benannt:</b> Weil die bestehenden Standorte nicht
+        funktechnisch optimiert, sondern erfahrungsbasiert gewählt wurden, kann dieser Test
+        <em>nicht</em> belegen, dass das Verfahren optimale Standorte findet. Er belegt, dass die
+        Abdeckungswirkung eines Standorts korrekt vorhergesagt wird. Genau so wird er in der
+        Arbeit auch dargestellt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ STAND & ZEITPLAN ══════════════ -->
+<section id="stand">
+  <div class="wrap">
+    <h2>Projektfortschritt <em>Stand August 2026</em></h2>
     <div class="phases">
       <div class="ph">
         <div class="id">01</div>
-        <div class="nm">Literaturrecherche &amp; Konzeption<small>Forschungslücke, Methodenauswahl, Projektdokumentation</small></div>
-        <div class="track"><i class="hi" style="--p:75%"></i></div>
-        <div class="pc">75 %</div>
+        <div class="nm">Literaturrecherche &amp; Konzeption<small>Forschungslücke, Methodenauswahl, Werkzeugabgrenzung</small></div>
+        <div class="track"><i class="hi" style="--p:85%"></i></div>
+        <div class="pc">85 %</div>
       </div>
       <div class="ph">
         <div class="id">02</div>
-        <div class="nm">Datenzugang &amp; Datenmodell<small>Datenbankschema analysiert, Rohdatenstruktur verifiziert</small></div>
-        <div class="track"><i style="--p:55%"></i></div>
-        <div class="pc">55 %</div>
+        <div class="nm">Datenzugang &amp; Datenmodell<small>Lesezugriff steht, Rohdatenstruktur und Extraktionsstrategie verifiziert</small></div>
+        <div class="track"><i class="hi" style="--p:80%"></i></div>
+        <div class="pc">80 %</div>
       </div>
       <div class="ph">
         <div class="id">03</div>
-        <div class="nm">Funkausbreitungsmodell — Stufe A<small>Kalibrierung mit realen Daten, Kontextvariablen</small></div>
-        <div class="track"><i style="--p:10%"></i></div>
-        <div class="pc">10 %</div>
+        <div class="nm">Funkausbreitungsmodell — Stufe A<small>Erste Kalibrierung durchgeführt, Kontextvariablen ausstehend</small></div>
+        <div class="track"><i style="--p:30%"></i></div>
+        <div class="pc">30 %</div>
       </div>
       <div class="ph">
         <div class="id">04</div>
@@ -432,156 +1081,116 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
       </div>
       <div class="ph">
         <div class="id">05</div>
-        <div class="nm">Validierung<small>Multi-Gateway-Test, Leave-One-Gateway-Out</small></div>
+        <div class="nm">Validierung<small>Multi-Gateway-Test, Gateway testweise entfernen</small></div>
         <div class="track"><i style="--p:0%"></i></div>
         <div class="pc">0 %</div>
       </div>
       <div class="ph">
         <div class="id">06</div>
         <div class="nm">Schriftliche Ausarbeitung<small>läuft parallel zu allen Phasen</small></div>
-        <div class="track"><i style="--p:8%"></i></div>
-        <div class="pc">8 %</div>
+        <div class="track"><i style="--p:15%"></i></div>
+        <div class="pc">15 %</div>
       </div>
+    </div>
+
+    <div style="margin-top:1.8rem">
+      <h2>Zeitplan <em>6 Monate ab offizieller Anmeldung</em></h2>
+      <div class="gantt">
+        <div class="gantt-inner">
+          <div class="g-head">
+            <div>Arbeitspaket</div>
+            <div>Monat 1</div><div>Monat 2</div><div>Monat 3</div>
+            <div>Monat 4</div><div>Monat 5</div><div>Monat 6</div>
+          </div>
+          <div class="g-row">
+            <div class="lab">Literatur &amp; Konzept</div>
+            <div class="g-cell"><span class="bar a"></span></div>
+            <div class="g-cell"><span class="bar a" style="right:40%"></span></div>
+            <div class="g-cell"></div><div class="g-cell"></div>
+            <div class="g-cell"></div><div class="g-cell"></div>
+          </div>
+          <div class="g-row">
+            <div class="lab">Datenpipeline</div>
+            <div class="g-cell"><span class="bar b" style="left:55%"></span></div>
+            <div class="g-cell"><span class="bar b"></span></div>
+            <div class="g-cell"><span class="bar b" style="right:55%"></span></div>
+            <div class="g-cell"></div><div class="g-cell"></div><div class="g-cell"></div>
+          </div>
+          <div class="g-row">
+            <div class="lab">Stufe A — Radio Map</div>
+            <div class="g-cell"></div><div class="g-cell"></div>
+            <div class="g-cell"><span class="bar b" style="left:40%"></span></div>
+            <div class="g-cell"><span class="bar w"></span></div>
+            <div class="g-cell"></div><div class="g-cell"></div>
+          </div>
+          <div class="g-row">
+            <div class="lab">Stufe B — Optimierung</div>
+            <div class="g-cell"></div><div class="g-cell"></div><div class="g-cell"></div>
+            <div class="g-cell"><span class="bar w" style="left:50%"></span></div>
+            <div class="g-cell"><span class="bar w" style="right:45%"></span></div>
+            <div class="g-cell"></div>
+          </div>
+          <div class="g-row">
+            <div class="lab">Validierung</div>
+            <div class="g-cell"></div><div class="g-cell"></div><div class="g-cell"></div>
+            <div class="g-cell"></div>
+            <div class="g-cell"><span class="bar w" style="left:35%"></span></div>
+            <div class="g-cell"><span class="bar w" style="right:60%"></span></div>
+          </div>
+          <div class="g-row">
+            <div class="lab">Ausarbeitung</div>
+            <div class="g-cell"><span class="bar" style="left:60%;opacity:.35"></span></div>
+            <div class="g-cell"><span class="bar" style="opacity:.35"></span></div>
+            <div class="g-cell"><span class="bar" style="opacity:.35"></span></div>
+            <div class="g-cell"><span class="bar" style="opacity:.35"></span></div>
+            <div class="g-cell"><span class="bar" style="opacity:.5"></span></div>
+            <div class="g-cell"><span class="bar"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="g-legend">
+        <span><i style="background:#DE9A1C"></i>abgeschlossen bzw. laufend</span>
+        <span><i style="background:#0D8A81"></i>in Bearbeitung</span>
+        <span><i class="bar w" style="position:static;transform:none"></i>geplant</span>
+        <span><i style="background:#3D4E8F;opacity:.35"></i>durchgehend parallel</span>
+      </div>
+      <p style="font-size:.76rem;color:var(--ink-3);margin-top:.8rem">Die Bearbeitungszeit läuft
+      ab der offiziellen Anmeldung. Die bisherige Vorarbeit — Literatur, Datenzugang, Konzept,
+      erste Kalibrierung — zählt nicht dagegen.</p>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ ZEITPLAN ══════════════ -->
+<!-- ══════════════ ENTSCHEIDUNGEN ══════════════ -->
 <section>
   <div class="wrap">
-    <h2>Zeitplan <em>6 Monate ab offizieller Anmeldung</em></h2>
-    <div class="gantt">
-      <div class="gantt-inner">
-        <div class="g-head">
-          <div>Arbeitspaket</div>
-          <div>Monat 1</div><div>Monat 2</div><div>Monat 3</div>
-          <div>Monat 4</div><div>Monat 5</div><div>Monat 6</div>
-        </div>
-        <div class="g-row">
-          <div class="lab">Literatur &amp; Konzept</div>
-          <div class="g-cell"><span class="bar a"></span></div>
-          <div class="g-cell"><span class="bar a" style="right:40%"></span></div>
-          <div class="g-cell"></div><div class="g-cell"></div>
-          <div class="g-cell"></div><div class="g-cell"></div>
-        </div>
-        <div class="g-row">
-          <div class="lab">Datenpipeline</div>
-          <div class="g-cell"><span class="bar b" style="left:55%"></span></div>
-          <div class="g-cell"><span class="bar b"></span></div>
-          <div class="g-cell"><span class="bar b" style="right:55%"></span></div>
-          <div class="g-cell"></div><div class="g-cell"></div><div class="g-cell"></div>
-        </div>
-        <div class="g-row">
-          <div class="lab">Stufe A — Radio Map</div>
-          <div class="g-cell"></div><div class="g-cell"></div>
-          <div class="g-cell"><span class="bar w" style="left:40%"></span></div>
-          <div class="g-cell"><span class="bar w"></span></div>
-          <div class="g-cell"></div><div class="g-cell"></div>
-        </div>
-        <div class="g-row">
-          <div class="lab">Stufe B — Optimierung</div>
-          <div class="g-cell"></div><div class="g-cell"></div><div class="g-cell"></div>
-          <div class="g-cell"><span class="bar w" style="left:50%"></span></div>
-          <div class="g-cell"><span class="bar w" style="right:45%"></span></div>
-          <div class="g-cell"></div>
-        </div>
-        <div class="g-row">
-          <div class="lab">Validierung</div>
-          <div class="g-cell"></div><div class="g-cell"></div><div class="g-cell"></div>
-          <div class="g-cell"></div>
-          <div class="g-cell"><span class="bar w" style="left:35%"></span></div>
-          <div class="g-cell"><span class="bar w" style="right:60%"></span></div>
-        </div>
-        <div class="g-row">
-          <div class="lab">Ausarbeitung</div>
-          <div class="g-cell"><span class="bar" style="left:60%;opacity:.35"></span></div>
-          <div class="g-cell"><span class="bar" style="opacity:.35"></span></div>
-          <div class="g-cell"><span class="bar" style="opacity:.35"></span></div>
-          <div class="g-cell"><span class="bar" style="opacity:.35"></span></div>
-          <div class="g-cell"><span class="bar" style="opacity:.5"></span></div>
-          <div class="g-cell"><span class="bar"></span></div>
-        </div>
-      </div>
-    </div>
-    <div class="g-legend">
-      <span><i style="background:#DE9A1C"></i>abgeschlossen bzw. laufend</span>
-      <span><i style="background:#0D8A81"></i>in Bearbeitung</span>
-      <span><i class="bar w" style="position:static;transform:none"></i>geplant</span>
-      <span><i style="background:#3D4E8F;opacity:.35"></i>durchgehend parallel</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ ANSATZ ══════════════ -->
-<section>
-  <div class="wrap">
-    <h2>Lösungsansatz <em>zweistufig und getrennt validierbar</em></h2>
-    <div class="stages">
-      <div class="stage a">
-        <div class="tag">Stufe A</div>
-        <h3>Funkqualität im Raum schätzen</h3>
-        <div class="chain">
-          <span>Betriebsdaten aus dem laufenden Netz</span>
-          <span>Umrechnung auf ADR-unabhängige Größen</span>
-          <span>Ausbreitungsmodell mit eigenen Daten kalibrieren</span>
-          <span>Ergänzung um Kontextdaten: Bebauung, Gelände</span>
-        </div>
-        <p>Statt Modellparameter aus der Literatur zu übernehmen, werden sie aus den realen
-        Wolfsburger Messdaten geschätzt. Vergleichbare Arbeiten zeigen dadurch eine Reduktion
-        des Vorhersagefehlers um rund zwei Drittel.</p>
-      </div>
-      <div class="stage b">
-        <div class="tag">Stufe B</div>
-        <h3>Standorte bewerten und reihen</h3>
-        <div class="chain">
-          <span>Kandidaten: real verfügbare Standorte</span>
-          <span>Abdeckungsprognose je Kandidat</span>
-          <span>Optimierung mit Gütegarantie</span>
-          <span>Rangliste mit Unsicherheitsangabe</span>
-        </div>
-        <p>Das gewählte Verfahren liefert eine mathematisch bewiesene Mindestgüte und ist
-        reproduzierbar — bei gleicher Eingabe stets dasselbe Ergebnis. Das unterscheidet es
-        von zufallsbasierten Optimierern.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ ERKENNTNISSE ══════════════ -->
-<section>
-  <div class="wrap">
-    <h2>Erkenntnisse aus der Voranalyse <em>im Rahmen der Arbeit noch zu validieren</em></h2>
-    <div class="finds">
-      <div class="find">
-        <div class="n">96 %</div>
-        <div class="u">nur ein Gateway</div>
-        <p>Fast alle Geräte hängen an einem einzigen Gateway. Fällt es aus, sind sie offline —
-        ein systematisches Ausfallrisiko im Bestandsnetz.</p>
-      </div>
-      <div class="find">
-        <div class="n">−0,40</div>
-        <div class="u">RSSI ↔ gültige Daten</div>
-        <p>Starke Signale garantieren keine verwertbaren Messwerte. Signalstärke allein ist
-        als Qualitätsmaß ungeeignet.</p>
-      </div>
-      <div class="find">
-        <div class="n">820</div>
-        <div class="u">Geräte · mehrere Gateways</div>
-        <p>Diese 4 % erlauben, das Modell gegen echte Messungen zu prüfen — ohne ein einziges
-        Testgateway aufzustellen.</p>
-      </div>
-      <div class="find">
-        <div class="n">vollständig</div>
-        <div class="u">Rohdatenbestand</div>
-        <p>Die Datenbank speichert alle empfangenden Gateways je Übertragung, nicht nur das
-        stärkste. Bessere Ausgangslage als erwartet.</p>
-      </div>
+    <h2>Methodenentscheidungen <em>je mit Alternative, Begründung und Quelle dokumentiert</em></h2>
+    <div class="decs">
+      <div class="dec"><span class="c">E01</span><span class="t">ADR-unabhängige Signalmetrik statt Roh-RSSI</span></div>
+      <div class="dec"><span class="c">E11</span><span class="t">Forschungslücke auf dünn ausgestattete Netze geschärft</span></div>
+      <div class="dec"><span class="c">E02</span><span class="t">Zweistufige Architektur, getrennt validierbar</span></div>
+      <div class="dec"><span class="c">E12</span><span class="t">Redundanz als eigenständiges Optimierungsziel</span></div>
+      <div class="dec"><span class="c">E03</span><span class="t">Optimierer mit beweisbarer Gütegarantie</span></div>
+      <div class="dec"><span class="c">E13</span><span class="t">Gütegarantie nachweisen statt voraussetzen</span></div>
+      <div class="dec"><span class="c">E04</span><span class="t">Kreuzvalidierung über bestehende Gateways</span></div>
+      <div class="dec"><span class="c">E14</span><span class="t">Abdeckung als Wahrscheinlichkeit statt harter Schwelle</span></div>
+      <div class="dec"><span class="c">E05</span><span class="t">Eigens kalibriertes Ausbreitungsmodell</span></div>
+      <div class="dec"><span class="c">E15</span><span class="t">Flächige und punktuelle Lücken unterscheiden</span></div>
+      <div class="dec"><span class="c">E06</span><span class="t">Beschränkung auf real verfügbare Standorte</span></div>
+      <div class="dec"><span class="c">E16</span><span class="t">Tageweise Extraktion statt Einzelabfrage</span></div>
+      <div class="dec"><span class="c">E07</span><span class="t">Ausschluss nicht-LoRaWAN-Geräte</span></div>
+      <div class="dec"><span class="c">E17</span><span class="t">Bounding-Box-Filter für Gateway-Koordinaten</span></div>
+      <div class="dec"><span class="c">E08</span><span class="t">Korrigierte Interpretation der Validierung</span></div>
+      <div class="dec"><span class="c">E18</span><span class="t">Plausibilitätsfilter für RSSI und SNR</span></div>
+      <div class="dec"><span class="c">E09</span><span class="t">Rohdaten statt vorberechneter Aggregate</span></div>
+      <div class="dec new"><span class="c">E19</span><span class="t">Formaterkennung je Datensatz statt nach Datum</span></div>
+      <div class="dec"><span class="c">E10</span><span class="t">Mehrfach empfangene Geräte als Prüfgröße</span></div>
     </div>
   </div>
 </section>
 
 <!-- ══════════════ LITERATUR ══════════════ -->
-<section>
+<section id="literatur">
   <div class="wrap">
     <h2>Literaturbasis <em>priorisiert nach Relevanz</em></h2>
     <div class="litwrap">
@@ -646,76 +1255,33 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
         <div class="litrow"><span class="c">SBU4</span><span class="nolink">Robust Gateway Placement for Scalable LoRaWAN</span></div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ ENTSCHEIDUNGEN ══════════════ -->
-<section>
-  <div class="wrap">
-    <h2>Methodenentscheidungen <em>je mit Begründung und Quelle dokumentiert</em></h2>
-    <div class="decs">
-      <div class="dec"><span class="c">E01</span><span class="t">ADR-unabhängige Signalmetrik statt Roh-RSSI</span></div>
-      <div class="dec"><span class="c">E02</span><span class="t">Zweistufige Architektur, getrennt validierbar</span></div>
-      <div class="dec"><span class="c">E03</span><span class="t">Optimierer mit beweisbarer Gütegarantie</span></div>
-      <div class="dec"><span class="c">E04</span><span class="t">Kreuzvalidierung über bestehende Gateways</span></div>
-      <div class="dec"><span class="c">E05</span><span class="t">Eigens kalibriertes Ausbreitungsmodell</span></div>
-      <div class="dec"><span class="c">E06</span><span class="t">Beschränkung auf real verfügbare Standorte</span></div>
-      <div class="dec"><span class="c">E07</span><span class="t">Ausschluss nicht-LoRaWAN-Geräte</span></div>
-      <div class="dec"><span class="c">E08</span><span class="t">Korrigierte Interpretation der Validierung</span></div>
-      <div class="dec"><span class="c">E09</span><span class="t">Rohdaten statt vorberechneter Aggregate</span></div>
-      <div class="dec"><span class="c">E10</span><span class="t">Multi-Gateway-Beobachtungen als Prüfgröße</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ STAND & AUSBLICK ══════════════ -->
-<section>
-  <div class="wrap">
-    <h2>Stand und nächste Schritte</h2>
-    <div class="tri">
-      <div>
-        <h3 style="font-size:.9rem;font-weight:600;margin-bottom:.6rem">Abgeschlossen</h3>
-        <ul>
-          <li class="ok">Forschungslücke belegt und formuliert</li>
-          <li class="ok">22 Fachartikel gesichtet und priorisiert</li>
-          <li class="ok">16 Projektdokumente angelegt</li>
-          <li class="ok">Datenmodell analysiert, Rohdatenstruktur verifiziert</li>
-          <li class="ok">Methodenauswahl begründet</li>
-        </ul>
-      </div>
-      <div>
-        <h3 style="font-size:.9rem;font-weight:600;margin-bottom:.6rem">In Arbeit</h3>
-        <ul>
-          <li>Literaturauswertung der Kernquellen</li>
-          <li>Klärung des Datenzugangs</li>
-          <li>Datenschutzkonzept abstimmen</li>
-          <li>Parser für Rohdaten vorbereiten</li>
-        </ul>
-      </div>
-      <div>
-        <h3 style="font-size:.9rem;font-weight:600;margin-bottom:.6rem">Als Nächstes</h3>
-        <ul>
-          <li>Erste Kalibrierung mit realen Daten</li>
-          <li>Residuenanalyse: Wo versagt das einfache Modell?</li>
-          <li>Kandidatenstandorte aufbereiten</li>
-          <li>Zweitbetreuer und Anmeldung klären</li>
-        </ul>
+      <div class="litgroup">
+        <div class="lithead">
+          <span class="code">I01–I02</span>
+          <span class="name">Industrielle Referenzsysteme</span>
+          <span class="desc">Kommerzielle Werkzeuge, keine begutachteten Publikationen. Aufgenommen zur Abgrenzung der eigenen Arbeit von der industriellen Praxis — Herstellerangaben, entsprechend vorsichtig zu zitieren.</span>
+        </div>
+        <div class="litlist">
+        <div class="litrow"><span class="c">I01</span><a href="https://www.actility.com/lorawan-coverage/" target="_blank" rel="noopener">Actility — ThingPark Network Coverage Tool</a></div>
+        <div class="litrow"><span class="c">I02</span><a href="https://www.forsk.com/atoll-lpwaiot" target="_blank" rel="noopener">Forsk — Atoll LPWA/IoT-Modul</a></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ══════════════ OFFENE PUNKTE ══════════════ -->
-<section>
+<section id="offen">
   <div class="wrap">
     <div class="ask-box">
       <h2>Offene Punkte <em>Rückmeldung willkommen</em></h2>
       <ul class="asks">
-        <li class="ask"><b>Datenzugang</b> — Lesezugriff auf die Betriebsdaten. Aktuell der zeitkritische Engpass für alle folgenden Arbeitspakete.</li>
-        <li class="ask"><b>Kandidatenstandorte</b> — Liste verfügbarer Standorte inklusive Antennenhöhe als Eingabe für die Optimierung.</li>
-        <li class="ask"><b>Kostendaten</b> — Miet- und Anschlusskosten je Standort, damit die Optimierung Kosten mitberücksichtigen kann.</li>
-        <li class="ask"><b>Abgleich mit der Praxis</b> — Sind konkrete Gateway-Installationen geplant? Ein Vergleich Modellvorschlag gegen reale Entscheidung wäre wissenschaftlich wertvoll.</li>
+        <li class="ask"><b>Kandidatenstandorte</b> — Liste verfügbarer POP-Standorte mit Koordinaten, Höhe und Backhaul-Anbindung. Ohne sie ist Stufe B nur mit einem Ersatzgitter durchführbar.</li>
+        <li class="ask"><b>Antennenhöhen der Gateways</b> — derzeit nicht dokumentiert, geht aber direkt in das Ausbreitungsmodell ein.</li>
+        <li class="ask"><b>Zielvorgabe Redundanz</b> — soll das Verfahren auf einfache Versorgung oder auf doppelte Absicherung optimieren? Das verändert die Zielfunktion.</li>
+        <li class="ask"><b>Einbausituation der Geräte</b> — Keller, Erdgeschoss oder Obergeschoss. Nach P02 ein wesentlicher Einflussfaktor auf die Linkqualität.</li>
+        <li class="ask"><b>Abgleich mit der Praxis</b> — sind konkrete Gateway-Installationen geplant? Ein Vergleich Modellvorschlag gegen reale Entscheidung wäre wissenschaftlich wertvoll.</li>
+        <li class="ask"><b>Kostendaten je Standort</b> — Miete, Wartung, Backhaul. Ohne sie rechnet das Modell mit einheitlichen Kosten pro Standort.</li>
       </ul>
     </div>
   </div>
@@ -724,7 +1290,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <footer>
   <div class="wrap foot">
     <span>Arash Mesri · Masterarbeit · TU Clausthal × Wobcom GmbH</span>
-    <span>Stand 14.08.2026 · Dieser Bericht wird laufend aktualisiert</span>
+    <span>Stand 25.08.2026 · Dieser Bericht wird laufend aktualisiert</span>
   </div>
 </footer>
 
