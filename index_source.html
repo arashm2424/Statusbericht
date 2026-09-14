@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Masterarbeit — Ausbauplanung LoRa-Netze · Arash Mesri</title>
-<meta name="description" content="Projektstand: Nutzung von Meta- und Kontextdaten zur Planung des Ausbaus von LoRa-Netzen. TU Clausthal × Wobcom.">
+<meta name="description" content="Projektstand September 2026: Nutzung von Meta- und Kontextdaten zur Planung des Ausbaus von LoRa-Netzen. Zensierungskorrigierte Kalibrierung mit Tobit-Schaetzung. TU Clausthal × Wobcom.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -229,6 +229,16 @@ h1{font-size:clamp(1.4rem,3.1vw,2.35rem);font-weight:600;line-height:1.13;
 .stage .tag{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.13em;
   text-transform:uppercase;font-weight:600;margin-bottom:.4rem}
 .stage.a .tag{color:var(--strong)} .stage.b .tag{color:var(--mid)}
+
+/* ── Status-Etiketten in Pruefketten-Tabellen ── */
+.tag.good,.tag.bad{
+  font-family:"IBM Plex Mono",monospace;font-size:.6rem;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;
+  padding:.16em .5em;border-radius:2px;margin-right:.45em;
+  display:inline-block;white-space:nowrap;
+}
+.tag.good{background:rgba(13,138,129,.11);color:var(--mid)}
+.tag.bad{background:rgba(180,72,60,.10);color:var(--alert)}
 .stage h3{font-size:1rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.01em}
 .chain{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
 .chain span{font-size:.82rem;color:var(--ink-2);background:var(--bg);
@@ -472,7 +482,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
   <div class="stampbar">
     <div class="wrap">
       <span class="k">Letzte Aktualisierung</span>
-      <span class="v"><span class="dot"></span>25. August 2026</span>
+      <span class="v"><span class="dot"></span>15. September 2026</span>
     </div>
   </div>
 </header>
@@ -485,8 +495,9 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
     <a href="#methoden"><b>03</b>Methodenvergleich</a>
     <a href="#werkzeuge"><b>04</b>Werkzeuge</a>
     <a href="#daten"><b>05</b>Datenaufbereitung</a>
-    <a href="#modell"><b>06</b>Erste Kalibrierung</a>
-    <a href="#pipeline"><b>07</b>Weiteres Vorgehen</a>
+    <a href="#modell"><b>06</b>Kalibrierungsdiagnose</a>
+    <a href="#durchbruch"><b>07</b>Zensierung gelöst</a>
+    <a href="#pipeline"><b>08</b>Weiteres Vorgehen</a>
     <a href="#stand">Stand</a>
     <a href="#literatur">Literatur</a>
     <a href="#offen">Offene Punkte</a>
@@ -515,16 +526,18 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
         verzerrt. Das Netz regelt Sendeleistung und Spreading Factor automatisch nach. Man misst
         also nicht die Funkumgebung, sondern die Reaktion des Netzes darauf. Die Arbeit rechnet
         deshalb auf Größen um, die von dieser Regelung unabhängig sind.</p>
-        <p>Wie stark dieser Effekt tatsächlich ist, zeigt sich inzwischen in den echten
-        Betriebsdaten — siehe Abschnitt 06.</p>
+        <p><b>Stand September 2026:</b> Der ADR-Effekt ist inzwischen methodisch beherrscht.
+        Die eigentliche Hürde lag woanders — zu schwache Verbindungen werden gar nicht erst
+        aufgezeichnet und verzerren jede naive Auswertung. Dieses Problem ist gelöst, siehe
+        Abschnitt 07.</p>
       </div>
     </div>
 
     <div class="kpis">
       <div class="kpi"><div class="n">34.345</div><div class="l">Geräte in der Flotte (Datenbankstand)</div></div>
-      <div class="kpi"><div class="n">1,39 Mio.</div><div class="l">ausgewertete Funkbeobachtungen (7 Tage)</div></div>
-      <div class="kpi"><div class="n t">25</div><div class="l">Fachartikel gesichtet und eingeordnet</div></div>
-      <div class="kpi"><div class="n t">19</div><div class="l">dokumentierte Methodenentscheidungen</div></div>
+      <div class="kpi"><div class="n">1,23 Mio.</div><div class="l">ausgewertete Funkbeobachtungen (7-Tage-Fenster)</div></div>
+      <div class="kpi"><div class="n t">26</div><div class="l">Fachartikel gesichtet und eingeordnet</div></div>
+      <div class="kpi"><div class="n t">37</div><div class="l">dokumentierte Methodenentscheidungen</div></div>
     </div>
   </div>
 </section>
@@ -547,7 +560,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
         <div class="fact"><div class="k">Frequenzband</div>
           <div class="v"><b>868 MHz (EU868)</b><small>lizenzfreies ISM-Band, alle Geräte einheitlich</small></div></div>
         <div class="fact"><div class="k">Aktive Gateways</div>
-          <div class="v"><b>32</b><small>in der ausgewerteten Woche empfangend; Antennenhöhen nicht dokumentiert</small></div></div>
+          <div class="v"><b>22 verifiziert</b><small>eigene Referenztabelle mit Position und Antennenhöhe; unzuverlässige Standorte ausgeschlossen</small></div></div>
         <div class="fact"><div class="k">Hersteller</div>
           <div class="v">Landis+Gyr, Zenner, Kamstrup, Sensus<small>heterogene Hardware, teils über Elvaco-Bridge angebunden</small></div></div>
         <div class="fact"><div class="k">Datenhistorie</div>
@@ -590,7 +603,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 
         <div class="viz">
           <h4>Verteilung der Spreading Factors</h4>
-          <p class="cap">1,39 Mio. Beobachtungen aus einer Woche. Ein hoher SF bedeutet: Das Netz
+          <p class="cap">1,39 Mio. Beobachtungen aus der Augustwoche. Ein hoher SF bedeutet: Das Netz
           musste die Reichweite erkaufen — langsamer, energieintensiver, mehr Luftzeit.
           Rund 24 % der Übertragungen laufen auf SF10 bis SF12.</p>
           <svg viewBox="0 0 260 96" role="img" aria-label="Balkendiagramm der Spreading-Factor-Verteilung">
@@ -649,10 +662,14 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
         diese Regelung verzerrt jede naive Auswertung von RSSI und SNR.</p>
       </div>
       <div class="find">
-        <div class="n w">4 % … 42 %</div>
-        <div class="u">Mehrfachversorgung — offen</div>
-        <p>Zwei Auswertungen widersprechen sich: ein älterer Export nennt 4,05 %, die neue
-        7-Tage-Stichprobe 41,9 %. Bewusst offengelegt statt vorschnell zusammengeführt.</p>
+        <div class="n w">42,8 %</div>
+        <div class="u">Geräte mit Mehrfachversorgung</div>
+        <p>Frisch verifiziert auf einer aktuellen 7-Tage-Stichprobe (1,23 Mio. Beobachtungen) — deutlich
+        über einem älteren Export (4,05 %), der auf anderer Methodik beruhte und als überholt gilt.
+        Wichtig für die Einordnung: Pro einzelner Übertragung liegt der Mittelwert bei nur 1,14
+        empfangenden Gateways — die beiden Zahlen widersprechen sich nicht, sie messen
+        Unterschiedliches (Anteil der Geräte mit <em>gelegentlicher</em> Mehrfachversorgung
+        gegenüber dem Durchschnitt <em>pro Übertragung</em>).</p>
       </div>
       <div class="find">
         <div class="n t">vollständig</div>
@@ -664,12 +681,10 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 
     <div style="margin-top:1.4rem" class="note q">
       <span class="lbl">Strukturelles Risiko im Bestand</span>
-      <p>Ein erheblicher Teil der Geräte erreicht nur ein einziges Gateway. Fällt es aus, sind
-      diese Geräte offline — ohne dass es im Betrieb sofort auffällt. Weil die genaue Höhe
-      dieses Anteils derzeit zwischen zwei Auswertungen strittig ist, wird er in der Arbeit
-      erst nach Klärung der Messmethodik beziffert. Unabhängig davon ist die Konsequenz für
-      die Methodik bereits gezogen: Redundanz wird als eigenständiges Optimierungsziel geführt
-      und nicht nur Flächenabdeckung maximiert.</p>
+      <p>Mit 57,2 % erreicht die Mehrheit der Geräte dauerhaft nur ein einziges Gateway. Fällt
+      es aus, sind diese Geräte offline — ohne dass es im Betrieb sofort auffällt. Die
+      Konsequenz für die Methodik ist bereits gezogen: Redundanz wird als eigenständiges
+      Optimierungsziel geführt und nicht nur Flächenabdeckung maximiert.</p>
     </div>
   </div>
 </section>
@@ -677,7 +692,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <!-- ══════════════ 03 · METHODENVERGLEICH ══════════════ -->
 <section id="methoden">
   <div class="wrap">
-    <h2><span class="step">03</span> Methodenvergleich aus der Literatur <em>25 Arbeiten gesichtet, Auswahl begründet</em></h2>
+    <h2><span class="step">03</span> Methodenvergleich aus der Literatur <em>26 Arbeiten bis P21 gesichtet, Auswahl begründet</em></h2>
     <p class="lead">Nach der Bestandsaufnahme folgte die Literaturarbeit. Für beide Kernfragen —
     <b>wie schätzt man Funkqualität im Raum?</b> und <b>wie wählt man daraus Standorte aus?</b> —
     wurden die gängigen Verfahren gegeneinander geprüft, statt das naheliegendste zu nehmen.</p>
@@ -865,21 +880,27 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
             <td class="src">B1</td>
           </tr>
           <tr>
-            <td>Wechselndes JSON-Format</td>
-            <td>zwei Formatwechsel seit Feb. 2026</td>
-            <td>Entgegen der ursprünglichen Annahme keine einmalige ChirpStack-Migration: v3 → v4 vor Februar, am 05.06.2026 zurück zu v3. Eine reine Datumsverzweigung würde stillschweigend leere Werte liefern — deshalb Erkennung je Datensatz.</td>
-            <td class="src">E19</td>
+            <td>Formatwechsel bei Funkparametern</td>
+            <td>Übergang 04.–11.06.2026, betrifft die gesamte Historie davor</td>
+            <td>Der Spreading Factor ist vor dem 11.06.2026 durchgehend leer. Ursache liegt nicht an
+            einer ChirpStack-Versionsmigration — die Feldnamen bleiben davor wie danach im
+            älteren Stil. Konsequenz: Kalibrierung zunächst nur auf dem Zeitraum ab 11.06.2026;
+            die vollständige Historie bleibt für eine spätere Ausweitung erhalten.</td>
+            <td class="src">E20 / E33</td>
           </tr>
           <tr>
             <td>Sendeleistung nicht enthalten</td>
-            <td>alle Uplinks</td>
-            <td>Verifiziert: Das Uplink-Event enthält keine TX-Power. Die Arbeit rechnet deshalb mit relativem Pfadverlust und behandelt die Sendeleistung als konstanten unbekannten Offset.</td>
-            <td class="src">B4</td>
+            <td>alle Uplinks, empirisch geprüft über ~847.000 Zeilen</td>
+            <td>Strukturell bedingt: Die Netzwerk-Software gibt Funksteuerbefehle nie an die
+            gespeicherte Ebene weiter. Textsuche über alle plausiblen Feldnamen bestätigt die
+            durchgängige Abwesenheit. Gelöst über die Multi-Gateway-Differenzmethode, die
+            Sendeleistung mathematisch eliminiert statt sie zu kennen — siehe Abschnitt 07.</td>
+            <td class="src">E33 / E34</td>
           </tr>
           <tr>
             <td>Abfragen brechen ab</td>
             <td>bei Zeiträumen &gt; 1 Tag</td>
-            <td>Der Zugriff läuft über eine Streaming-Replica, die lang laufende Abfragen abbricht. Verbindliches Vorgehen: tageweise Extraktion mit je neuer Verbindung. Verifiziert mit 7 von 7 Tagen und 1,39 Mio. Zeilen ohne Abbruch.</td>
+            <td>Der Zugriff läuft über eine Streaming-Replica, die lang laufende Abfragen abbricht. Verbindliches Vorgehen: tageweise Extraktion mit je neuer Verbindung. Verifiziert mit 7 von 7 Tagen und 1,39 Mio. Zeilen ohne Abbruch; seither mehrfach reproduziert.</td>
             <td class="src">E16</td>
           </tr>
         </tbody>
@@ -899,17 +920,18 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <!-- ══════════════ 06 · ERSTE KALIBRIERUNG ══════════════ -->
 <section id="modell">
   <div class="wrap">
-    <h2><span class="step">06</span> Erste Kalibrierung mit echten Daten <em>vorläufig, 7-Tage-Stichprobe</em></h2>
-    <p class="lead">Der erste Durchlauf des Ausbreitungsmodells auf echten Betriebsdaten liefert
-    ein <b>physikalisch unplausibles Ergebnis — und genau das ist der interessante Befund.</b>
-    Er belegt empirisch, was die Aufgabenstellung als Ausgangsthese formuliert hat.</p>
+    <h2><span class="step">06</span> Diagnose des Kalibrierungsproblems <em>fünf Hypothesen systematisch geprüft</em></h2>
+    <p class="lead">Die erste Kalibrierung auf echten Betriebsdaten lieferte einen
+    <b>physikalisch unmöglichen Pfadverlustexponenten</b>. Statt das Ergebnis zu akzeptieren
+    oder zu beschönigen, wurden fünf mögliche Erklärungen einzeln getestet — vier ließen sich
+    ausschließen. Genau diese Ausschlusskette führte zur Lösung in Abschnitt 07.</p>
 
     <div class="factgrid">
       <div class="viz">
-        <h4>Gemessener gegen erwarteten Pfadverlustanstieg</h4>
-        <p class="cap">Schematische Darstellung. Der aus den Betriebsdaten geschätzte Exponent
-        n ≈ 1,14 liegt deutlich unter dem physikalisch erwarteten Bereich für städtische Umgebung
-        (n ≈ 2,7 – 3,5) und sogar unter dem Freiraumwert n = 2.</p>
+        <h4>Der Ausgangsbefund: zu flacher Signalabfall</h4>
+        <p class="cap">Der geschätzte Exponent n ≈ 1,22 liegt unter dem Freiraumwert n = 2 —
+        physikalisch ausgeschlossen. Ein Signal kann im städtischen Raum nicht langsamer
+        abfallen als im freien Raum ohne jedes Hindernis.</p>
         <svg viewBox="0 0 300 168" role="img" aria-label="Vergleich der Pfadverlustkurven">
           <g stroke="#EDF1F5" stroke-width="1">
             <line x1="34" y1="20" x2="288" y2="20"/><line x1="34" y1="55" x2="288" y2="55"/>
@@ -917,18 +939,13 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
           </g>
           <line x1="34" y1="140" x2="288" y2="140" stroke="#DFE5EC" stroke-width="1"/>
           <line x1="34" y1="14" x2="34" y2="140" stroke="#DFE5EC" stroke-width="1"/>
-
-          <!-- erwartete Kurve n=3.0 -->
           <path d="M34 132 L288 26" fill="none" stroke="#3D4E8F" stroke-width="2" stroke-dasharray="4 3"/>
-          <!-- Freiraum n=2 -->
           <path d="M34 132 L288 61" fill="none" stroke="#7A8AA1" stroke-width="1.4" stroke-dasharray="2 3"/>
-          <!-- gemessen n=1.14 -->
-          <path d="M34 132 L288 92" fill="none" stroke="#B4483C" stroke-width="2.6"/>
-
+          <path d="M34 132 L288 90" fill="none" stroke="#B4483C" stroke-width="2.6"/>
           <g font-family="IBM Plex Mono, monospace" font-size="7.4" fill="#41536B">
             <text x="292" y="28" text-anchor="end" fill="#3D4E8F">n ≈ 3,0  städtisch erwartet</text>
-            <text x="292" y="63" text-anchor="end" fill="#7A8AA1">n = 2  Freiraum</text>
-            <text x="292" y="88" text-anchor="end" fill="#B4483C" font-weight="600">n = 1,14  gemessen</text>
+            <text x="292" y="63" text-anchor="end" fill="#7A8AA1">n = 2  Freiraum (Untergrenze)</text>
+            <text x="292" y="86" text-anchor="end" fill="#B4483C" font-weight="600">n = 1,22  gemessen (OLS)</text>
             <text x="34" y="152" fill="#7A8AA1">log(Distanz) →</text>
           </g>
           <text x="14" y="80" font-family="IBM Plex Mono, monospace" font-size="7.4" fill="#7A8AA1"
@@ -938,41 +955,213 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 
       <div>
         <div class="note q">
-          <span class="lbl">Der Befund und seine Einordnung</span>
+          <span class="lbl">Warum das zunächst wie ein ADR-Effekt aussah</span>
           <p>Ein zu flacher Anstieg heißt: Weiter entfernte Geräte sehen im Signal <em>besser</em>
-          aus, als sie physikalisch dürften. Das ist genau der erwartete ADR-Effekt — das Netz
-          hebt bei schlechter Verbindung Spreading Factor und Sendeleistung an und kompensiert
-          die Distanz, bevor sie sichtbar wird.</p>
-          <p><b>Wichtiger Gegentest:</b> Nach Anwendung des Plausibilitätsfilters blieb der
-          Exponent praktisch unverändert (1,14 vor und nach Filterung), obwohl 3,2 % der Zeilen
-          entfernt wurden. Der niedrige Wert lässt sich damit <b>nicht</b> auf schlechte
-          Datenqualität zurückführen — das stützt die ADR-Erklärung.</p>
-        </div>
-
-        <div class="viz" style="margin-top:1rem">
-          <h4>Was der Filter dennoch bewirkt hat</h4>
-          <p class="cap">Die Ausreißer beeinflussten nicht die Steigung, aber massiv die
-          Fehlerverteilung. Für die spätere Bestimmung von Sicherheitsaufschlägen ist das
-          entscheidend.</p>
-          <div class="facts" style="border:none">
-            <div class="fact" style="padding-left:0;padding-right:0">
-              <div class="k">Kurtosis</div><div class="v"><b>15,6 → 4,4</b></div></div>
-            <div class="fact" style="padding-left:0;padding-right:0">
-              <div class="k">Residuenspanne</div><div class="v"><b>−243 … 59 dB → −61 … 59 dB</b></div></div>
-            <div class="fact" style="padding-left:0;padding-right:0">
-              <div class="k">Bestimmtheitsmaß</div><div class="v"><b>R² ≈ 0,18</b><small>ein reines Distanzmodell erklärt die Varianz erwartungsgemäß nicht — Kontextdaten sind der nächste Schritt</small></div></div>
-          </div>
+          aus, als sie dürften. Die naheliegende Erklärung war Adaptive Data Rate — das Netz hebt
+          bei schlechter Verbindung Spreading Factor und Sendeleistung an und kompensiert die
+          Distanz, bevor sie sichtbar wird.</p>
+          <p><b>Diese Erklärung hat sich als unvollständig erwiesen.</b> Auch nach vollständiger
+          Kontrolle für ADR blieb der Exponent zu niedrig — siehe Prüfkette unten.</p>
         </div>
       </div>
     </div>
 
-    <div class="note" style="margin-top:1.3rem">
-      <span class="lbl">Nächster Diagnoseschritt</span>
-      <p>Kalibrierung getrennt je Spreading Factor. Trifft die ADR-Erklärung zu, muss sich
-      innerhalb einzelner SF-Gruppen — wo die Kopplung zwischen Linkqualität und Konfiguration
-      reduziert ist — ein plausiblerer Exponent zeigen. Das ist ein überprüfbarer Test, kein
-      Plausibilitätsargument. Die Umrechnung auf ADR-robuste Größen wird vor der endgültigen
-      Festlegung mit Prof. Neumann besprochen.</p>
+    <div class="viz" style="margin-top:1.3rem">
+      <h4>Prüfkette: fünf Erklärungen, vier widerlegt</h4>
+      <p class="cap">Jede Hypothese wurde mit einem eigenen, überprüfbaren Test behandelt —
+      mehrere davon zusätzlich gegen synthetische Daten mit bekannter Wahrheit abgesichert.</p>
+      <table>
+        <thead><tr><th>Erklärungsversuch</th><th>Testverfahren</th><th>Ergebnis</th></tr></thead>
+        <tbody>
+          <tr><td>Schlechte Datenqualität, Ausreißer</td>
+              <td>Plausibilitätsfilter für RSSI/SNR und Distanz</td>
+              <td><span class="tag bad">widerlegt</span> n praktisch unverändert</td></tr>
+          <tr><td>Unbekannte Sendeleistung durch ADR</td>
+              <td>Multi-Gateway-Differenzmethode — dieselbe Übertragung an zwei Empfängern, die Sendeleistung kürzt sich mathematisch heraus</td>
+              <td><span class="tag bad">widerlegt</span> n bleibt niedrig</td></tr>
+          <tr><td>Spreading Factor als Störgröße</td>
+              <td>Getrennte Kalibrierung je SF, zusätzlich Kontrolltest an synthetischen Daten</td>
+              <td><span class="tag bad">widerlegt</span> SF-Kontrolle erhöht n nicht</td></tr>
+          <tr><td>Ungenaue Gerätekoordinaten</td>
+              <td>Sensitivitätstest mit steigender Mindestdistanz</td>
+              <td><span class="tag bad">widerlegt</span> kein systematischer Trend</td></tr>
+          <tr><td>Statistische Instabilität</td>
+              <td>Bootstrap mit 50 Wiederholungen je Gateway</td>
+              <td><span class="tag bad">widerlegt</span> alle 20 Gateways stabil</td></tr>
+          <tr style="background:#FFF9EC"><td><b>Zensierung der Stichprobe</b></td>
+              <td><b>Tobit-Maximum-Likelihood</b></td>
+              <td><span class="tag good">bestätigt</span> siehe Abschnitt 07</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note" style="margin-top:1.2rem">
+      <span class="lbl">Ein methodisch wichtiger Zwischenbefund</span>
+      <p>Die Gateway-Stammdaten enthielten vier Standorte ohne unabhängige Positionsbestätigung.
+      Nach Umstellung auf einen strengen Referenzfilter (nur Gateways mit verifizierter Position
+      und Antennenhöhe) verbesserten sich <b>alle</b> Kennzahlen deutlich: der schlechteste
+      Vorhersagefehler fiel von 40,8 dB auf 13,9 dB. Ein relevanter Teil der zuvor unerklärten
+      Streuung ging also auf wenige fehlerhafte Stammdatensätze zurück, nicht auf die Methodik.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 07 · DURCHBRUCH ══════════════ -->
+<section id="durchbruch">
+  <div class="wrap">
+    <h2><span class="step">07</span> Die Lösung: Zensierung der Stichprobe <em>September 2026, validiertes Verfahren</em></h2>
+    <p class="lead">Die verbliebene Erklärung hat sich bestätigt. Das Verfahren liefert erstmals
+    einen <b>physikalisch plausiblen Pfadverlustexponenten</b> — und ist gegen synthetische Daten
+    mit bekannter Wahrheit abgesichert, bevor es auf die echten Daten angewendet wurde.</p>
+
+    <div class="factgrid">
+      <div>
+        <div class="note q">
+          <span class="lbl">Das Problem in einem Satz</span>
+          <p>Verbindungen, die zu schwach für den Empfänger sind, <b>erscheinen nie in der
+          Datenbank</b>. Man wertet also nur die gelungenen Verbindungen aus und übersieht
+          systematisch die gescheiterten — als würde man die Durchschnittsnote einer Klasse nur
+          aus den bestandenen Arbeiten berechnen.</p>
+          <p>In diesem Netz betrifft das <b>85,2 %</b> aller möglichen Gerät-Gateway-Kombinationen.
+          Die bisherige Auswertung beruhte damit auf 14,8 % der eigentlich relevanten Information.</p>
+        </div>
+        <div class="note" style="margin-top:.9rem">
+          <span class="lbl">Wie das Verfahren damit umgeht</span>
+          <p>Für eine nicht empfangene Verbindung wird <b>kein Signalwert erfunden</b>. Verwendet
+          wird nur die gesicherte Information: Das Signal lag unterhalb der bekannten
+          Empfängerempfindlichkeit der verbauten Hardware. Das Tobit-Verfahren bezieht diese
+          unvollständige, aber echte Information korrekt in die Schätzung ein.</p>
+          <p>Zusätzlich abgesichert: Nur Verbindungen, bei denen das Gateway im Zeitfenster
+          nachweislich aktiv war, gelten als gültig zensiert — damit wird ein Geräteausfall nicht
+          fälschlich als Funkverlust gewertet.</p>
+        </div>
+      </div>
+
+      <div class="viz">
+        <h4>Ergebnis: OLS gegen Tobit auf identischer Datenbasis</h4>
+        <p class="cap">215.914 Gerät-Gateway-Kombinationen, 7-Tage-Fenster, 22 verifizierte
+        Gateways. Nur das Schätzverfahren unterscheidet sich.</p>
+        <svg viewBox="0 0 300 180" role="img" aria-label="Vergleich OLS und Tobit">
+          <g stroke="#EDF1F5" stroke-width="1">
+            <line x1="46" y1="24" x2="290" y2="24"/><line x1="46" y1="56" x2="290" y2="56"/>
+            <line x1="46" y1="88" x2="290" y2="88"/><line x1="46" y1="120" x2="290" y2="120"/>
+          </g>
+          <line x1="46" y1="140" x2="290" y2="140" stroke="#DFE5EC"/>
+          <line x1="46" y1="18" x2="46" y2="140" stroke="#DFE5EC"/>
+
+          <rect x="70" y="93" width="46" height="47" fill="#B4483C" opacity=".85"/>
+          <rect x="186" y="16" width="46" height="124" fill="#0D8A81"/>
+
+          <rect x="46" y="40" width="244" height="56" fill="#DE9A1C" opacity=".08"/>
+          <line x1="46" y1="40" x2="290" y2="40" stroke="#DE9A1C" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="46" y1="96" x2="290" y2="96" stroke="#DE9A1C" stroke-width="1" stroke-dasharray="3 2"/>
+
+          <g font-family="IBM Plex Mono, monospace" font-size="7.6" fill="#41536B">
+            <text x="93" y="152" text-anchor="middle">OLS</text>
+            <text x="209" y="152" text-anchor="middle">Tobit</text>
+            <text x="93" y="88" text-anchor="middle" fill="#B4483C" font-weight="600">1,22</text>
+            <text x="209" y="11" text-anchor="middle" fill="#0D8A81" font-weight="600">3,22</text>
+            <text x="286" y="50" text-anchor="end" fill="#DE9A1C" font-size="6.8">Literaturbereich 1,5 – 4,5</text>
+            <text x="41" y="27" text-anchor="end" fill="#7A8AA1">4</text>
+            <text x="41" y="59" text-anchor="end" fill="#7A8AA1">3</text>
+            <text x="41" y="91" text-anchor="end" fill="#7A8AA1">2</text>
+            <text x="41" y="123" text-anchor="end" fill="#7A8AA1">1</text>
+          </g>
+          <text x="13" y="80" font-family="IBM Plex Mono, monospace" font-size="7.4" fill="#7A8AA1"
+                transform="rotate(-90 13 80)" text-anchor="middle">Pfadverlustexponent n</text>
+        </svg>
+        <div class="facts" style="border:none;margin-top:.6rem">
+          <div class="fact" style="padding-left:0"><div class="k">95 %-Konfidenzintervall (Bootstrap)</div>
+            <div class="v"><b>3,186 – 3,254</b><small>50 Wiederholungen, sehr enge Streuung</small></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="viz" style="margin-top:1.3rem">
+      <h4>Vorabsicherung: Funktioniert das Verfahren überhaupt?</h4>
+      <p class="cap">Bevor das Verfahren auf echte Daten angewendet wurde, musste es an
+      künstlichen Daten mit <b>vorab bekanntem</b> Exponenten (n = 2,5) beweisen, dass es diesen
+      zurückfindet. Das entscheidende vierte Szenario wurde exakt auf den realen
+      Zensierungsanteil kalibriert.</p>
+      <table>
+        <thead><tr><th>Szenario</th><th>Zensierungsanteil</th><th>OLS findet</th><th>Tobit findet</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Keine Zensierung</td><td>0 %</td><td class="mono">2,477</td><td class="mono">2,477</td><td><span class="tag good">bestanden</span></td></tr>
+          <tr><td>Moderate Zensierung</td><td>13,1 %</td><td class="mono">2,271</td><td class="mono">2,516</td><td><span class="tag good">bestanden</span></td></tr>
+          <tr><td>Hohe Zensierung</td><td>17,8 %</td><td class="mono">2,106</td><td class="mono">2,500</td><td><span class="tag good">bestanden</span></td></tr>
+          <tr style="background:#F0FAF9"><td><b>Wie im Echtbetrieb</b></td><td><b>85,1 %</b></td><td class="mono">1,761</td><td class="mono"><b>2,508</b></td><td><span class="tag good">bestanden</span></td></tr>
+        </tbody>
+      </table>
+      <p class="cap" style="margin-top:.7rem">Lesart: Je stärker die Zensierung, desto weiter
+      entfernt sich das klassische Verfahren (OLS) vom wahren Wert 2,5 — während Tobit auch bei
+      85 % Zensierung auf 0,008 genau bleibt. Das ist die Rechtfertigung dafür, dem Ergebnis auf
+      den echten Daten zu vertrauen.</p>
+    </div>
+
+    <div class="viz" style="margin-top:1.3rem">
+      <h4>Ehrliche Einordnung: wovon das Ergebnis noch abhängt</h4>
+      <p class="cap">Die Empfängerempfindlichkeit stammt aus dem Herstellerdatenblatt des
+      Funkchips, nicht aus einer Messung der tatsächlich verbauten Karten. Der Sicherheitsabstand,
+      der reale Kabel- und Steckverluste abdecken soll, ist deshalb eine begründete Annahme.
+      Diese Grafik zeigt offen, wie stark das Ergebnis davon abhängt.</p>
+      <svg viewBox="0 0 640 230" role="img" aria-label="Sensitivitaetsanalyse Sicherheitsabstand">
+        <defs>
+          <linearGradient id="plaus" x1="0" x2="1">
+            <stop offset="0%" stop-color="#0D8A81" stop-opacity=".14"/>
+            <stop offset="100%" stop-color="#0D8A81" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <rect x="56" y="18" width="100" height="160" fill="url(#plaus)"/>
+        <g stroke="#EDF1F5" stroke-width="1">
+          <line x1="56" y1="18" x2="616" y2="18"/><line x1="56" y1="58" x2="616" y2="58"/>
+          <line x1="56" y1="98" x2="616" y2="98"/><line x1="56" y1="138" x2="616" y2="138"/>
+        </g>
+        <rect x="56" y="58" width="560" height="120" fill="#DE9A1C" opacity=".06"/>
+        <line x1="56" y1="58" x2="616" y2="58" stroke="#DE9A1C" stroke-dasharray="3 2"/>
+        <line x1="56" y1="178" x2="616" y2="178" stroke="#DFE5EC"/>
+        <line x1="56" y1="12" x2="56" y2="178" stroke="#DFE5EC"/>
+
+        <polyline fill="none" stroke="#0D8A81" stroke-width="2.6"
+          points="56,36 93,49 131,62 168,73 205,83 243,91 280,99 317,105 354,110 392,114 429,118 466,121 504,124 541,126 578,127 616,129"/>
+        <g fill="#0D8A81">
+          <circle cx="56" cy="36" r="3.2"/><circle cx="131" cy="62" r="3.2"/><circle cx="205" cy="83" r="3.2"/>
+        </g>
+        <circle cx="93" cy="49" r="4.6" fill="#fff" stroke="#B4483C" stroke-width="2.4"/>
+
+        <g font-family="IBM Plex Mono, monospace" font-size="9" fill="#41536B">
+          <text x="50" y="21" text-anchor="end" fill="#7A8AA1">4,0</text>
+          <text x="50" y="61" text-anchor="end" fill="#7A8AA1">3,0</text>
+          <text x="50" y="101" text-anchor="end" fill="#7A8AA1">2,0</text>
+          <text x="50" y="141" text-anchor="end" fill="#7A8AA1">1,0</text>
+          <text x="56" y="194">0</text><text x="205" y="194" text-anchor="middle">8</text>
+          <text x="354" y="194" text-anchor="middle">16</text><text x="504" y="194" text-anchor="middle">24</text>
+          <text x="616" y="194" text-anchor="end">30</text>
+          <text x="336" y="215" text-anchor="middle" fill="#7A8AA1">angenommener Sicherheitsabstand (dB)</text>
+          <text x="106" y="14" fill="#0D8A81" font-size="8">physikalisch plausibel (0–6 dB)</text>
+          <text x="99" y="44" fill="#B4483C" font-size="8" font-weight="600">gewählt: 2 dB → n = 3,22</text>
+          <text x="610" y="70" text-anchor="end" fill="#DE9A1C" font-size="8">Literaturbereich 1,5 – 4,5</text>
+        </g>
+        <text x="16" y="98" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7A8AA1"
+              transform="rotate(-90 16 98)" text-anchor="middle">n (Tobit)</text>
+      </svg>
+      <div class="facts" style="border:none;margin-top:.7rem">
+        <div class="fact" style="padding-left:0"><div class="k">Physikalisch vertretbarer Bereich</div>
+          <div class="v"><b>n = 2,64 … 3,56</b><small>Sicherheitsabstand 0–6 dB; typische Kabel- und Steckverluste liegen in dieser Größenordnung</small></div></div>
+        <div class="fact" style="padding-left:0"><div class="k">Kernaussage</div>
+          <div class="v"><b>durchgehend im Literaturbereich</b><small>über den gesamten vertretbaren Bereich bleibt die Schlussfolgerung stabil — unabhängig von der genauen Wahl</small></div></div>
+      </div>
+    </div>
+
+    <div class="note q" style="margin-top:1.2rem">
+      <span class="lbl">Was das für die Arbeit bedeutet</span>
+      <p>Der auffällige Exponent war <b>kein Messfehler und keine Eigenheit des Netzes</b>, sondern
+      ein systematischer Auswertungsfehler, den die bisherige Literatur zu LoRaWAN-Netzplanung in
+      dieser Form nicht behandelt. Damit ist die zentrale methodische Hürde der Arbeit genommen
+      und die Voraussetzung für Stufe B — die eigentliche Standortoptimierung — geschaffen.</p>
+      <p><b>Offen und transparent benannt:</b> Der exakte Zahlenwert hängt von der angenommenen
+      Empfängerempfindlichkeit ab. Eine Messung der tatsächlich verbauten Hardware oder eine
+      Kalibrierung gegen bekannte Referenzverbindungen würde diesen Punkt abschließend klären.
+      Die qualitative Schlussfolgerung ist davon nicht betroffen.</p>
     </div>
   </div>
 </section>
@@ -980,7 +1169,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <!-- ══════════════ 07 · PIPELINE ══════════════ -->
 <section id="pipeline">
   <div class="wrap">
-    <h2><span class="step">07</span> Weiteres Vorgehen <em>Arbeitspipeline, jede Stufe einzeln überprüfbar</em></h2>
+    <h2><span class="step">08</span> Weiteres Vorgehen <em>Arbeitspipeline, jede Stufe einzeln überprüfbar</em></h2>
     <p class="lead">Die Reihenfolge ist bewusst gewählt: Erst wenn eine Stufe belastbar ist, wird
     die nächste gebaut. Die beiden Validierungsschritte am Ende prüfen das Verfahren gegen echte
     Messungen — <b>ohne dass dafür ein Testgateway aufgestellt werden muss.</b></p>
@@ -1053,25 +1242,25 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <!-- ══════════════ STAND & ZEITPLAN ══════════════ -->
 <section id="stand">
   <div class="wrap">
-    <h2>Projektfortschritt <em>Stand August 2026</em></h2>
+    <h2>Projektfortschritt <em>Stand September 2026</em></h2>
     <div class="phases">
       <div class="ph">
         <div class="id">01</div>
-        <div class="nm">Literaturrecherche &amp; Konzeption<small>Forschungslücke, Methodenauswahl, Werkzeugabgrenzung</small></div>
-        <div class="track"><i class="hi" style="--p:85%"></i></div>
-        <div class="pc">85 %</div>
+        <div class="nm">Literaturrecherche &amp; Konzeption<small>Forschungslücke belegt: keine der gesichteten Messarbeiten kalibriert unter aktivem ADR</small></div>
+        <div class="track"><i class="hi" style="--p:95%"></i></div>
+        <div class="pc">95 %</div>
       </div>
       <div class="ph">
         <div class="id">02</div>
-        <div class="nm">Datenzugang &amp; Datenmodell<small>Lesezugriff steht, Rohdatenstruktur und Extraktionsstrategie verifiziert</small></div>
-        <div class="track"><i class="hi" style="--p:80%"></i></div>
-        <div class="pc">80 %</div>
+        <div class="nm">Datenzugang &amp; Datenmodell<small>Datenintegrität unabhängig geprüft, Extraktionspipeline produktiv</small></div>
+        <div class="track"><i class="hi" style="--p:95%"></i></div>
+        <div class="pc">95 %</div>
       </div>
       <div class="ph">
         <div class="id">03</div>
-        <div class="nm">Funkausbreitungsmodell — Stufe A<small>Erste Kalibrierung durchgeführt, Kontextvariablen ausstehend</small></div>
-        <div class="track"><i style="--p:30%"></i></div>
-        <div class="pc">30 %</div>
+        <div class="nm">Funkausbreitungsmodell — Stufe A<small>Zensierungsproblem gelöst, plausibler Exponent erreicht; Kontextvariablen ausstehend</small></div>
+        <div class="track"><i class="hi" style="--p:70%"></i></div>
+        <div class="pc">70 %</div>
       </div>
       <div class="ph">
         <div class="id">04</div>
@@ -1088,8 +1277,8 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
       <div class="ph">
         <div class="id">06</div>
         <div class="nm">Schriftliche Ausarbeitung<small>läuft parallel zu allen Phasen</small></div>
-        <div class="track"><i style="--p:15%"></i></div>
-        <div class="pc">15 %</div>
+        <div class="track"><i style="--p:25%"></i></div>
+        <div class="pc">25 %</div>
       </div>
     </div>
 
@@ -1164,7 +1353,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <!-- ══════════════ ENTSCHEIDUNGEN ══════════════ -->
 <section>
   <div class="wrap">
-    <h2>Methodenentscheidungen <em>je mit Alternative, Begründung und Quelle dokumentiert</em></h2>
+    <h2>Methodenentscheidungen <em>37 dokumentiert — Auswahl der wichtigsten, je mit Alternative und Begründung</em></h2>
     <div class="decs">
       <div class="dec"><span class="c">E01</span><span class="t">ADR-unabhängige Signalmetrik statt Roh-RSSI</span></div>
       <div class="dec"><span class="c">E11</span><span class="t">Forschungslücke auf dünn ausgestattete Netze geschärft</span></div>
@@ -1183,8 +1372,17 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
       <div class="dec"><span class="c">E08</span><span class="t">Korrigierte Interpretation der Validierung</span></div>
       <div class="dec"><span class="c">E18</span><span class="t">Plausibilitätsfilter für RSSI und SNR</span></div>
       <div class="dec"><span class="c">E09</span><span class="t">Rohdaten statt vorberechneter Aggregate</span></div>
-      <div class="dec new"><span class="c">E19</span><span class="t">Formaterkennung je Datensatz statt nach Datum</span></div>
+      <div class="dec"><span class="c">E19</span><span class="t">Offenes Suchgitter statt fester Kandidatenliste</span></div>
       <div class="dec"><span class="c">E10</span><span class="t">Mehrfach empfangene Geräte als Prüfgröße</span></div>
+      <div class="dec"><span class="c">E22</span><span class="t">Naive Kalibrierung unter aktivem ADR verworfen</span></div>
+      <div class="dec"><span class="c">E27</span><span class="t">Strenger Referenzfilter für Gateway-Stammdaten</span></div>
+      <div class="dec"><span class="c">E29</span><span class="t">Gemeinsames Fixed-Effects-Modell statt Einzelschätzung</span></div>
+      <div class="dec"><span class="c">E30</span><span class="t">Bootstrap widerlegt Instabilitätshypothese</span></div>
+      <div class="dec"><span class="c">E31</span><span class="t">Einheitlicher konservativer Sicherheitsaufschlag</span></div>
+      <div class="dec"><span class="c">E33</span><span class="t">Gespeichertes Ereignis ist reduzierte Integrationsebene</span></div>
+      <div class="dec"><span class="c">E34</span><span class="t">Sendeleistung empirisch nicht rekonstruierbar</span></div>
+      <div class="dec new"><span class="c">E36</span><span class="t">Zensierungskorrektur als priorisierter Lösungsweg</span></div>
+      <div class="dec new"><span class="c">E37</span><span class="t">Gateway-Hardware identifiziert, Empfindlichkeit belegt</span></div>
     </div>
   </div>
 </section>
@@ -1196,9 +1394,9 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
     <div class="litwrap">
       <div class="litgroup">
         <div class="lithead">
-          <span class="code">P01–P17</span>
+          <span class="code">P01–P21</span>
           <span class="name">Kernliteratur</span>
-          <span class="desc">Priorisierte Hauptquellen, geordnet nach Nähe zur eigenen Fragestellung. Sie decken vier Stränge ab: Funkausbreitung, Signalmetriken, Standortoptimierung und Radio-Map-Schätzung.</span>
+          <span class="desc">Priorisierte Hauptquellen, geordnet nach Nähe zur eigenen Fragestellung. Sie decken fünf Stränge ab: Funkausbreitung, Signalmetriken, Standortoptimierung, Radio-Map-Schätzung und — seit der Zensierungsdiagnose in Abschnitt 07 zentral — zensierungsrobuste Schätzverfahren.</span>
         </div>
         <div class="litlist">
         <div class="litrow"><span class="c">P01</span><a href="https://doi.org/10.3390/s24123877" target="_blank" rel="noopener">A Critical Review of the Propagation Models Employed in LoRa Systems</a></div>
@@ -1218,6 +1416,10 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
         <div class="litrow"><span class="c">P15</span><a href="https://doi.org/10.1007/BF01588971" target="_blank" rel="noopener">An Analysis of Approximations for Maximizing Submodular Set Functions</a></div>
         <div class="litrow"><span class="c">P16</span><span class="nolink">The Maximal Covering Location Problem</span></div>
         <div class="litrow"><span class="c">P17</span><a href="https://ieeexplore.ieee.org/document/6165627" target="_blank" rel="noopener">A Survey of Wireless Path Loss Prediction and Coverage Mapping Methods</a></div>
+        <div class="litrow"><span class="c">P18</span><a href="https://arxiv.org/abs/1504.03977" target="_blank" rel="noopener">Statistical Modeling and Estimation of Censored Pathloss Data</a></div>
+        <div class="litrow"><span class="c">P19</span><a href="https://arxiv.org/abs/2608.11083" target="_blank" rel="noopener">A Systematic Sample Size Analysis of ML-Based Path Loss Prediction for LPWAN</a></div>
+        <div class="litrow"><span class="c">P20</span><a href="https://doi.org/10.1109/JIOT.2019.2953804" target="_blank" rel="noopener">Characterization of LoRa Point-to-Point Path Loss: Measurement Campaigns and Modeling Considering Censored Data</a></div>
+        <div class="litrow"><span class="c">P21</span><a href="https://arxiv.org/abs/2109.07768" target="_blank" rel="noopener">Path Loss in Urban LoRa Networks: A Large-Scale Measurement Study</a></div>
         </div>
       </div>
       <div class="litgroup">
@@ -1275,14 +1477,53 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
   <div class="wrap">
     <div class="ask-box">
       <h2>Offene Punkte <em>Rückmeldung willkommen</em></h2>
+      <p class="lead" style="margin-bottom:1.1rem">Sechs Punkte aus dem letzten Stand konnten
+      inzwischen geklärt werden. Was bleibt, ist unten benannt — jeweils mit der Angabe, ob es
+      die Arbeit blockiert oder nur ihre Genauigkeit begrenzt.</p>
       <ul class="asks">
-        <li class="ask"><b>Kandidatenstandorte</b> — Liste verfügbarer POP-Standorte mit Koordinaten, Höhe und Backhaul-Anbindung. Ohne sie ist Stufe B nur mit einem Ersatzgitter durchführbar.</li>
-        <li class="ask"><b>Antennenhöhen der Gateways</b> — derzeit nicht dokumentiert, geht aber direkt in das Ausbreitungsmodell ein.</li>
-        <li class="ask"><b>Zielvorgabe Redundanz</b> — soll das Verfahren auf einfache Versorgung oder auf doppelte Absicherung optimieren? Das verändert die Zielfunktion.</li>
-        <li class="ask"><b>Einbausituation der Geräte</b> — Keller, Erdgeschoss oder Obergeschoss. Nach P02 ein wesentlicher Einflussfaktor auf die Linkqualität.</li>
-        <li class="ask"><b>Abgleich mit der Praxis</b> — sind konkrete Gateway-Installationen geplant? Ein Vergleich Modellvorschlag gegen reale Entscheidung wäre wissenschaftlich wertvoll.</li>
-        <li class="ask"><b>Kostendaten je Standort</b> — Miete, Wartung, Backhaul. Ohne sie rechnet das Modell mit einheitlichen Kosten pro Standort.</li>
+        <li class="ask"><b>Empfängerempfindlichkeit der verbauten Hardware</b>
+          <span class="tag bad">begrenzt Genauigkeit</span><br>
+          Verwendet wird derzeit der Datenblattwert des Funkchips zuzüglich eines angenommenen
+          Sicherheitsabstands. Eine Messung an einer real verbauten Karte — oder eine bekannte
+          Referenzverbindung mit gesicherter Distanz — würde den Exponenten aus Abschnitt 07
+          von einem Bereich auf einen Zahlenwert verengen.</li>
+        <li class="ask"><b>Abgleich mit der Praxis</b>
+          <span class="tag bad">wissenschaftlich wertvoll</span><br>
+          Sind konkrete Gateway-Installationen geplant? Ein Vergleich zwischen Modellvorschlag
+          und realer Standortentscheidung wäre die stärkste mögliche Validierung der Arbeit.</li>
+        <li class="ask"><b>Freigabe der veröffentlichbaren Inhalte</b>
+          <span class="tag bad">organisatorisch</span><br>
+          Zu klären ist, welche Ergebnisse in der veröffentlichten Fassung erscheinen dürfen —
+          insbesondere Gateway-Standorte und Netzstruktur. Betrifft nur die Darstellung, nicht
+          die Analyse selbst.</li>
       </ul>
+
+      <div class="note" style="margin-top:1.3rem">
+        <span class="lbl">Seit dem letzten Stand geklärt</span>
+        <table style="margin-top:.5rem">
+          <tbody>
+            <tr><td><b>Kandidatenstandorte</b></td>
+                <td>Es existiert keine feste Standortliste — bei Bedarf kann grundsätzlich jede
+                geeignete Örtlichkeit angemietet werden. Das Verfahren arbeitet deshalb auf einem
+                räumlichen Suchgitter mit Präferenz für vorhandene Infrastruktur.</td></tr>
+            <tr><td><b>Antennenhöhen</b></td>
+                <td>Eigene Referenztabelle mit Position und Antennenhöhe für 22 verifizierte
+                Gateways erstellt; dient zugleich als Qualitätsfilter.</td></tr>
+            <tr><td><b>Zielvorgabe Redundanz</b></td>
+                <td>Keine feste Vorgabe — beide Varianten (einfache und doppelte Versorgung)
+                werden vergleichend untersucht.</td></tr>
+            <tr><td><b>Einbausituation der Geräte</b></td>
+                <td>Liegt für kein Gerät vor und ist nicht beschaffbar. Methodische Konsequenz:
+                einheitlicher, konservativer Sicherheitsaufschlag statt geratener Einzelzuordnung.</td></tr>
+            <tr><td><b>Kostendaten je Standort</b></td>
+                <td>Bewusst außerhalb des Arbeitsumfangs. Alle Kandidaten werden mit
+                einheitlichen Kosten behandelt — keine Datenlücke, sondern eine Abgrenzung.</td></tr>
+            <tr><td><b>Sendeleistung der Geräte</b></td>
+                <td>Empirisch bestätigt nicht aus der Datenbank rekonstruierbar. Gelöst über die
+                Multi-Gateway-Differenzmethode, die diese Größe mathematisch eliminiert.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -1290,7 +1531,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);
 <footer>
   <div class="wrap foot">
     <span>Arash Mesri · Masterarbeit · TU Clausthal × Wobcom GmbH</span>
-    <span>Stand 25.08.2026 · Dieser Bericht wird laufend aktualisiert</span>
+    <span>Stand 15.09.2026 · Dieser Bericht wird laufend aktualisiert</span>
   </div>
 </footer>
 
